@@ -1,4 +1,5 @@
 <?php
+// Helper function to get translation from Tolgee JSON files
 if (!function_exists('t')) {
     function t($key, $lang = null) {
         $lang = $lang ?: app()->getLocale();

@@ -1,5 +1,8 @@
 {
     "en": {
+        "storefront": {
+            "welcome": "Hello"
+        },
         "test": "test the language feature",
         "test.TWO": "test the language feature"
     }

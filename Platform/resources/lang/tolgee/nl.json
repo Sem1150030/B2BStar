@@ -1,5 +1,8 @@
 {
     "nl": {
+        "storefront": {
+            "welcome": "Hallo"
+        },
         "test": "test de taalfunctie",
         "test.TWO": "test de taalfunctie"
     }
