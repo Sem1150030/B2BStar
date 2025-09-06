@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'tolgee' => [
+        'api_url' => env('TOLGEE_API_URL', 'https://app.tolgee.io'),
+        'api_key' => env('TOLGEE_API_KEY'),
+        'project_id' => env('TOLGEE_PROJECT_ID'),
+    ],
 
     /*
     |--------------------------------------------------------------------------
