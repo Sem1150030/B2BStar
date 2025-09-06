@@ -1,2 +1,7 @@
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
+@import "../../vendor/livewire/flux/dist/flux.css";
+
+/* Tailwind v4 dark mode handled by Flux via .dark class on <html>. */
+/* Inter font applied via global utility override below. */
+
+html { font-family: Inter, system-ui, sans-serif; }
