@@ -11,7 +11,7 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'brand_id', 'category', 'has_multiple_variants', 'is_published', 'published_at', 'slug'
+        'brand_id', 'category_id', 'has_multiple_variants', 'is_published', 'published_at', 'slug'
     ];
 
     protected $casts = [
@@ -28,6 +28,11 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(ProductVariant::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function scopePublished($query)

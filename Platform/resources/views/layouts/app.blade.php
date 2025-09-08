@@ -9,10 +9,12 @@
         @if (class_exists(\Livewire\Flux\FluxServiceProvider::class))
             @fluxAppearance
         @endif
-        @stack('styles')
+    @stack('styles')
     </head>
 
-    <body ">
+    <body class="pt-28 bg-gray-50 min-h-screen">
+        {{-- Top navigation fixed --}}
+        @livewire('marketplace.navigation.top-navigation')
         @if (class_exists(\Livewire\Flux\FluxServiceProvider::class))
             @fluxScripts
         @endif

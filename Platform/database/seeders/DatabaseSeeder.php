@@ -6,11 +6,13 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\Category;
 use App\Models\ProductImage;
 use App\Models\ProductDiscount;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,7 +32,46 @@ class DatabaseSeeder extends Seeder
             return; // already seeded
         }
 
-        // Create brands with nested products & variants
+        // Create (or ensure) a curated list of marketplace categories
+        $categoryNames = [
+            'Electronics',
+            'Computers & Accessories',
+            'Smartphones & Tablets',
+            'Home & Kitchen',
+            'Furniture',
+            'Health & Personal Care',
+            'Beauty & Grooming',
+            'Sports & Outdoors',
+            'Fitness & Training',
+            'Toys & Games',
+            'Baby & Kids',
+            'Fashion & Apparel',
+            'Shoes & Footwear',
+            'Jewelry & Watches',
+            'Books & Media',
+            'Office & Stationery',
+            'Pet Supplies',
+            'Automotive',
+            'Tools & Home Improvement',
+            'Garden & Outdoor',
+            'Groceries & Gourmet',
+            'Arts & Crafts',
+            'Music Instruments',
+            'Travel & Luggage',
+            'Industrial & Scientific',
+        ];
+
+        $categories = collect($categoryNames)->map(function (string $name) {
+            return Category::firstOrCreate(
+                ['slug' => Str::slug($name)],
+                [
+                    'name' => $name,
+                    'description' => $name . ' category'
+                ]
+            );
+        });
+
+    // Create brands with nested products & variants
         Brand::factory()
             ->count(5)
             ->create()
@@ -39,6 +80,9 @@ class DatabaseSeeder extends Seeder
                     ->count(3)
                     ->create(['brand_id' => $brand->id])
                     ->each(function (Product $product) {
+            // Random category assignment
+            $randomCategory = \App\Models\Category::inRandomOrder()->first();
+            $product->update(['category_id' => $randomCategory?->id]);
                         // Decide number of variants
                         $variantCount = $product->has_multiple_variants ? rand(2,4) : 1;
                         ProductVariant::factory()
