@@ -5,8 +5,10 @@
         <div class="relative flex h-16 justify-between">
         <div class="relative z-10 flex px-2 lg:px-0">
             <div class="flex shrink-0 items-center">
-            <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" class="h-8 w-auto" />
-            </div>
+            <a href="/" class="inline-flex items-center gap-2">
+				<span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-800 text-white font-bold text-sm text-lg shadow-sm">B2B</span>
+			</a>
+          </div>
         </div>
         <div class="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
             <div class="grid w-full grid-cols-1 sm:max-w-xs">
@@ -31,20 +33,37 @@
         </div>
         <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
             <!-- Language selector (native details) -->
-            <details class="relative mr-4 group">
-                <summary class="list-none cursor-pointer inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+            <div x-data="{ open: false }" class="relative mr-4">
+                <!-- Trigger -->
+                <button @click="open = !open"
+                    class="inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                     <span class="uppercase">{{ strtoupper($currentLocale ?? app()->getLocale()) }}</span>
-                    <svg viewBox="0 0 20 20" fill="currentColor" class="size-4 transition group-open:rotate-180">
-                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd" />
+                    <svg viewBox="0 0 20 20" fill="currentColor"
+                        class="size-4 transition-transform"
+                        :class="{ 'rotate-180': open }">
+                        <path fill-rule="evenodd"
+                            d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                            clip-rule="evenodd" />
                     </svg>
-                </summary>
-                <div class="absolute left-0 mt-2 w-40 origin-top-left rounded-md bg-white p-1 text-sm shadow-lg ring-1 ring-black/5 z-50">
+                </button>
+
+                <!-- Dropdown -->
+                <div x-show="open"
+                    @click.outside="open = false"
+                    x-transition
+                    class="absolute left-0 mt-2 w-40 origin-top-left rounded-md bg-white p-1 text-sm shadow-lg ring-1 ring-black/5 z-50">
                     @foreach($languages as $code => $label)
                         @php($active = ($currentLocale ?? app()->getLocale()) === $code)
-                        <a href="/lang/{{ $code }}" wire:click.prevent="switchLocale('{{ $code }}')" class="block rounded px-2 py-1.5 hover:bg-gray-100 {{ $active ? 'font-semibold text-indigo-600' : 'text-gray-700' }}" role="menuitem">{{ $label }}</a>
+                        <a href="/lang/{{ $code }}"
+                        wire:click.prevent="switchLocale('{{ $code }}')"
+                        class="block rounded px-2 py-1.5 hover:bg-gray-100 {{ $active ? 'font-semibold text-indigo-600' : 'text-gray-700' }}"
+                        role="menuitem">
+                            {{ $label }}
+                        </a>
                     @endforeach
                 </div>
-            </details>
+            </div>
+
             <button type="button" class="relative shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
             <span class="absolute -inset-1.5"></span>
             <span class="sr-only">View notifications</span>
@@ -54,19 +73,36 @@
             </button>
 
             <!-- Profile dropdown -->
-            <el-dropdown class="relative ml-4 shrink-0">
-            <button class="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 focus-visible:ring-offset-2">
-                <span class="absolute -inset-1.5"></span>
-                <span class="sr-only">Open user menu</span>
-                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="size-8 rounded-full bg-gray-800 outline-1 -outline-offset-1 outline-white/10" />
-            </button>
+            @if(Auth::check())
+                <div x-data="{ open: false }" class="relative ml-4 shrink-0">
+                    <button @click="open = !open"
+                        class="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 focus-visible:ring-offset-2">
+                        <span class="sr-only">Open user menu</span>
+                        <img class="size-8 rounded-full bg-gray-800"
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt="User avatar">
+                    </button>
 
-            <el-menu anchor="bottom end" popover class="m-0 w-48 origin-top-right rounded-md bg-white p-0 py-1 shadow-lg outline-1 outline-black/5 transition [--anchor-gap:theme(spacing.2)] [transition-behavior:allow-discrete] data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in">
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-none">Your profile</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-none">Settings</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-none">Sign out</a>
-            </el-menu>
-            </el-dropdown>
+                    <!-- Dropdown menu -->
+                    <div x-show="open"
+                        @click.outside="open = false"
+                        x-transition
+                        class="absolute right-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-50">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                        <form method="POST" action="">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Sign out
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <div class="ml-4 shrink-0">
+                    <a href="/auth/login" class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Sign in</a>
+                </div>
+            @endif
         </div>
         </div>
     <nav aria-label="Global" class="hidden lg:flex lg:space-x-8 lg:py-2">
@@ -88,9 +124,11 @@
         </div>
         <div class="border-t border-white/10 pb-3 pt-4">
             <div class="flex items-center px-4">
-            <div class="shrink-0">
-                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="size-10 rounded-full bg-gray-800 outline-1 -outline-offset-1 outline-white/10" />
-            </div>
+            @if(Auth::check())
+                <div class="shrink-0">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="size-10 rounded-full bg-gray-800 outline-1 -outline-offset-1 outline-white/10" />
+                </div>
+            @endif
             <div class="ml-3">
                 <div class="text-base font-medium text-white">Tom Cook</div>
                 <div class="text-sm font-medium text-gray-400">tom@example.com</div>
