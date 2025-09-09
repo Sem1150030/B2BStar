@@ -37,9 +37,11 @@ class TopNavigation extends Component
         session(['app_locale' => $locale]);
         cookie()->queue('app_locale', $locale, 60 * 24 * 365, '/');
 
-        app()->setLocale($locale);
-        $this->currentLocale = $locale;
-        $this->dispatch('locale-changed', locale: $locale);
+    app()->setLocale($locale);
+    $this->currentLocale = $locale;
+    // Emit both Livewire event and browser event; frontend will force reload so whole app re-renders in new locale
+    $this->dispatch('locale-changed', locale: $locale);
+    $this->dispatch('reload-page');
     }
 
 

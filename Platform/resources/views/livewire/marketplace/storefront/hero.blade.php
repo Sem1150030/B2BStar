@@ -11,7 +11,7 @@
 			<span class="inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-200">Wholesale procurement platform</span>
 
 			<h1 class="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-				Simplify complex B2B purchasing
+				{{ t('storefront.title') }}
 			</h1>
 
 			<p class="mt-6 text-lg leading-8 text-gray-700">
