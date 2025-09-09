@@ -11,7 +11,8 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        //
+        //Email servive Welcome email
+        session()->flash('success', "User {$user->name} created!");
     }
 
     /**
@@ -19,7 +20,8 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        //
+        //Email service Update email
+        session()->flash('success', "User {$user->name} updated!");
     }
 
     /**
@@ -27,7 +29,8 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
-        //
+        //Email service Delete email
+        session()->flash('success', "User {$user->name} deleted!");
     }
 
     /**

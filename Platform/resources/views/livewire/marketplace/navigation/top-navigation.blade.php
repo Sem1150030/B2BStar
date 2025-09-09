@@ -48,7 +48,7 @@
                 </button>
 
                 <!-- Dropdown -->
-                <div x-show="open"
+                <div x-show="open" x-cloak
                     @click.outside="open = false"
                     x-transition
                     class="absolute left-0 mt-2 w-40 origin-top-left rounded-md bg-white p-1 text-sm shadow-lg ring-1 ring-black/5 z-50">
