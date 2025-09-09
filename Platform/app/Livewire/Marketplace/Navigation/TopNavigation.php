@@ -37,13 +37,13 @@ class TopNavigation extends Component
         session(['app_locale' => $locale]);
         cookie()->queue('app_locale', $locale, 60 * 24 * 365, '/');
 
-        // Apply immediately for this request cycle so re-render picks translations
         app()->setLocale($locale);
         $this->currentLocale = $locale;
-
-        // Optional: dispatch browser event if front-end scripts need to react
         $this->dispatch('locale-changed', locale: $locale);
     }
+
+
+
 
     public function render()
     {

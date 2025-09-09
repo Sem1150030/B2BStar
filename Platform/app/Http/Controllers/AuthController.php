@@ -22,7 +22,6 @@ class AuthController extends Controller
         $validated = $request->validate([
             'email' => ['required','email'],
             'password' => ['required','string','min:6'],
-            'remember' => ['nullable','boolean'],
         ]);
 
         $credentials = [
@@ -40,5 +39,13 @@ class AuthController extends Controller
         return back()->withErrors([
             'email' => 'Invalid email or password.',
         ])->onlyInput('email');
+    }
+
+    public function logoutAction(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }

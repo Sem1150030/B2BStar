@@ -13,5 +13,6 @@ Route::get('/', function () {
 
 Route::get('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::post('/auth/login', [AuthController::class, 'loginAction'])->name('login.action');
+Route::post('/auth/logout', [AuthController::class, 'logoutAction'])->name('logout.action');
 
 Route::get('/lang/{locale}',[LanguageController::class, 'switch'])->name('lang.switch');
