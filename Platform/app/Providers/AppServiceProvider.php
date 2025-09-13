@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
 
             Gate::define('access-backoffice', function ($user) {
                 if ($user->role_type != null){
-                return in_array($user->role_type, ['App\Models\Admin', roleTypes::BRAND]);
+                return in_array($user->role_type, ['App\Models\Admin', roleTypes::BRAND->value]);
             }
         }
         );

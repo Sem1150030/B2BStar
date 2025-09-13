@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Marketplace\Navigation;
 
+use App\roleTypes;
 use Auth;
 use Livewire\Component;
 
@@ -26,6 +27,7 @@ class TopNavigation extends Component
     {
         $this->currentLocale = app()->getLocale();
         $this->role = Auth::user()->role_type ?? null;
+        dump($this->role == roleTypes::BRAND->value);
     }
 
     /**
