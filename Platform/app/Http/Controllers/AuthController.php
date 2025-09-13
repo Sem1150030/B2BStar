@@ -16,6 +16,31 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function register(){
+        if (Auth::check()) {
+            return redirect('/');
+        }
+
+        return view('auth.register.registerOverview');
+    }
+
+    public function registerBrand(){
+        if (Auth::check()) {
+            return redirect('/');
+        }
+
+        return view('auth.register.registerBrand');
+    }
+
+    public function registerRetailer(){
+        if (Auth::check()) {
+            return redirect('/');
+        }
+
+        return view('auth.register.registerRetailer');
+    }
+
+
     public function loginAction(Request $request)
     {
         // Validate incoming credentials
@@ -48,4 +73,5 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/')->with('success', 'You have been logged out.');
     }
+
 }

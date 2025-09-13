@@ -15,6 +15,11 @@ Route::get('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::post('/auth/login', [AuthController::class, 'loginAction'])->name('login.action');
 Route::post('/auth/logout', [AuthController::class, 'logoutAction'])->name('logout.action');
 
+Route::get('/auth/register', [AuthController::class, 'register'])->name('register');
+Route::get('/auth/register/brand', [AuthController::class, 'registerBrand'])->name('register.brand');
+Route::get('/auth/register/retailer', [AuthController::class, 'registerRetailer'])->name('register.retailer');
+
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/backoffice/dashboard', [BackofficeController::class, 'dashboard'])->name('backoffice.dashboard');

@@ -1,6 +1,7 @@
 <div>
     <!-- Fixed top navigation bar -->
     <header class="fixed top-0 inset-x-0 z-50 bg-gray-800 shadow-sm">
+
     <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-white/10 lg:px-8">
         <div class="relative flex h-16 justify-between">
         <div class="relative z-10 flex px-2 lg:px-0">
@@ -12,7 +13,7 @@
         </div>
         <div class="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
             <div class="grid w-full grid-cols-1 sm:max-w-xs">
-            <input name="search" placeholder="Search" aria-label="Search" class="col-start-1 row-start-1 block w-full rounded-md border-0 bg-white/5 py-1.5 pl-10 pr-3 text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+            <input name="search" placeholder={{ t('nav.search') }} aria-label="Search" class="col-start-1 row-start-1 block w-full rounded-md border-0 bg-white/5 py-1.5 pl-10 pr-3 text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
             <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 ml-3 size-5 self-center text-gray-400">
                 <path d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" fill-rule="evenodd" />
             </svg>
@@ -96,12 +97,12 @@
                         @click.outside="open = false"
                         x-transition
                         class="absolute right-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-50">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ t('nav.profile') }}</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ t('nav.settings') }}</a>
                         <form method="POST" action="{{ route('logout.action') }}">
                             @csrf
                             <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                Sign out
+                                {{ t('nav.signout') }}
                             </button>
                         </form>
                     </div>
@@ -114,7 +115,7 @@
         </div>
         </div>
     <nav aria-label="Global" class="hidden lg:flex lg:space-x-8 lg:py-2">
-    <a href="#" aria-current="page" class="inline-flex items-center rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">@lang('common.dashboard')</a>
+    <a href="/" aria-current="page" class="inline-flex items-center rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">@lang('common.dashboard')</a>
     <a href="#" class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">@lang('common.team')</a>
     <a href="#" class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">@lang('common.projects')</a>
     <a href="#" class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">@lang('common.calendar')</a>
@@ -150,17 +151,18 @@
             </button>
             </div>
             <div class="mt-3 space-y-1 px-2">
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white">Your profile</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white">Settings</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white">Sign out</a>
-            <div class="pt-2 mt-2 border-t border-white/10">
-                <p class="px-3 pb-1 text-xs uppercase tracking-wide text-gray-500">@lang('common.language')</p>
-                @foreach($languages as $code => $label)
-                    @php($active = ($currentLocale ?? app()->getLocale()) === $code)
-                    <a href="/lang/{{ $code }}" wire:click.prevent="switchLocale('{{ $code }}')" class="block rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 {{ $active ? 'text-indigo-400' : 'text-gray-300' }}">{{ $label }}</a>
-                @endforeach
+                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white">Your profile</a>
+                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white">Settings</a>
+                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white">Sign out</a>
             </div>
-            </div>
+        </div>
+        <div class="pt-2 mt-2 border-t border-white/10">
+            <p class="px-3 pb-1 text-xs uppercase tracking-wide text-gray-500">@lang('common.language')</p>
+            @foreach($languages as $code => $label)
+                @php($active = ($currentLocale ?? app()->getLocale()) === $code)
+                <a href="/lang/{{ $code }}" wire:click.prevent="switchLocale('{{ $code }}')" class="block rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 {{ $active ? 'text-indigo-400' : 'text-gray-300' }}">{{ $label }}</a>
+            @endforeach
+        </div>
         </div>
         </nav>
     </el-disclosure>

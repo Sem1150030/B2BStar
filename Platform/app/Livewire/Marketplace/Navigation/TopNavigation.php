@@ -31,7 +31,7 @@ class TopNavigation extends Component
     /**
      * Switch the application locale (Livewire-driven, no full reload).
      */
-    public function switchLocale(string $locale): void
+    public function switchLocale(string $locale)
     {
         if (! array_key_exists($locale, $this->languages)) {
             return; // silently ignore invalid
@@ -44,6 +44,7 @@ class TopNavigation extends Component
         app()->setLocale($locale);
         $this->currentLocale = $locale;
         $this->dispatch('locale-changed', locale: $locale);
+        return redirect(request()->header('Referer'));
     }
 
 

@@ -1,6 +1,38 @@
 {
     "de": {
+        "auth": {
+            "register": {
+                "overview": {
+                    "description": {
+                        "brand": "Sind Sie eine Marke oder ein Lieferant und möchten Ihre Produkte auf unserer Plattform anbieten Dann registrieren Sie sich als Marke und erreichen neue Einzelhändler",
+                        "retailer": "Sind Sie ein Ladenbesitzer oder Einzelhändler und möchten Produkte von verschiedenen Marken kaufen Dann registrieren Sie sich als Einzelhändler und profitieren von unserem Angebot"
+                    },
+                    "title": {
+                        "brand": "Registrieren als Marke",
+                        "retailer": "Registrieren als Händler"
+                    },
+                    "titles": "Wählen Sie Ihren Registrierungstyp"
+                }
+            }
+        },
+        "nav": {
+            "profile": "Ihr Profil",
+            "search": "Suchen",
+            "settings": "Einstellungen",
+            "signout": "Abmelden"
+        },
         "storefront": {
+            "categorie": {
+                "description": "Erkunden Sie Beschaffungsoptionen und verhandelte Lieferantenbedingungen für"
+            },
+            "categories": {
+                "description": "Starten Sie die Beschaffung in unseren aktivsten Produktbereichen.",
+                "title": "Kategorien durchsuchen"
+            },
+            "description": "Verbinden Sie sich mit geprüften Lieferanten, verwalten Sie vereinbarte Preise und automatisieren Sie wiederkehrende Bestellungen in Ihrem Unternehmen in einem einheitlichen Arbeitsbereich.",
+            "getstarted": "Loslegen",
+            "tagline": "Großhandelsbeschaffungsplattform",
+            "talktosales": "Vertrieb kontaktieren",
             "title": "Komplexe B2B-Käufe vereinfachen",
             "welcome": "Hallo"
         },

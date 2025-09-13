@@ -1,6 +1,38 @@
 {
     "en": {
+        "auth": {
+            "register": {
+                "overview": {
+                    "description": {
+                        "brand": "Are you a brand or supplier and do you want to offer your products on our platform? Then register as a brand and reach new retailers.",
+                        "retailer": "Are you a shop owner or retailer and do you want to purchase products from different brands? Then register as a retailer and benefit from our offer."
+                    },
+                    "title": {
+                        "brand": "Register as a Brand",
+                        "retailer": "Register as a Retailer"
+                    },
+                    "titles": "Choose your registration type"
+                }
+            }
+        },
+        "nav": {
+            "profile": "Your Profile",
+            "search": "Search",
+            "settings": "Settings",
+            "signout": "Sign out"
+        },
         "storefront": {
+            "categorie": {
+                "description": "Explore sourcing options and negotiated supplier terms for"
+            },
+            "categories": {
+                "description": "Kickstart sourcing across our most active product domains.",
+                "title": "Browse Categories"
+            },
+            "description": "Connect with vetted suppliers, manage negotiated pricing, and automate repeat orders across your organization in one unified workspace.",
+            "getstarted": "Get Started",
+            "tagline": "Wholesale procurement platform",
+            "talktosales": "Talk to Sales",
             "title": "Simplify complex B2B purchasing",
             "welcome": "Hello"
         },

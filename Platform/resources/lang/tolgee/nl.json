@@ -1,6 +1,38 @@
 {
     "nl": {
+        "auth": {
+            "register": {
+                "overview": {
+                    "description": {
+                        "brand": "Ben je een merk of leverancier en wil je je producten aanbieden op ons platform? Registreer je dan als een merk en bereik nieuwe retailers.",
+                        "retailer": "Ben je een winkeleigenaar of retailer en wil je producten van verschillende merken kopen? Registreer je dan als een retailer en profiteer van ons aanbod."
+                    },
+                    "title": {
+                        "brand": "Registreer als een Merk",
+                        "retailer": "Registreer als een Detailhandelaar"
+                    },
+                    "titles": "Kies je registratietype"
+                }
+            }
+        },
+        "nav": {
+            "profile": "Je profiel",
+            "search": "Zoeken",
+            "settings": "Instellingen",
+            "signout": "Afmelden"
+        },
         "storefront": {
+            "categorie": {
+                "description": "Verken inkoopopties en onderhandelde voorwaarden met leveranciers"
+            },
+            "categories": {
+                "description": "Start met inkopen binnen onze meest actieve productdomeinen.",
+                "title": "Blader door Categorieën"
+            },
+            "description": "Verbind met geverifieerde leveranciers, beheer onderhandelde prijzen, en automatiseer herhaalaankopen binnen uw organisatie in één verenigd werkruimte.",
+            "getstarted": "Aan de slag",
+            "tagline": "Platform voor groothandelsinkoop",
+            "talktosales": "Praat met Verkoop",
             "title": "Vereenvoudig complexe B2B-aankopen",
             "welcome": "Hallo"
         },

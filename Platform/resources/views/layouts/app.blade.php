@@ -14,7 +14,7 @@
         @stack('styles')
     </head>
 
-    <body class="pt-28 bg-gray-50 min-h-screen">
+    <body class=" bg-gray-50 min-h-screen">
         {{-- Top navigation fixed --}}
         @livewire('marketplace.navigation.top-navigation')
             <livewire:alerts.toast />
@@ -26,5 +26,6 @@
         @stack('scripts')
         @yield('content')
 
+        @livewireScripts
     </body>
 </html>

@@ -1,6 +1,38 @@
 {
     "fr": {
+        "auth": {
+            "register": {
+                "overview": {
+                    "description": {
+                        "brand": "Êtes-vous une marque ou un fournisseur et souhaitez-vous proposer vos produits sur notre plateforme? Alors, inscrivez-vous en tant que marque et atteignez de nouveaux détaillants.",
+                        "retailer": "Êtes-vous propriétaire d'un magasin ou détaillant et souhaitez-vous acheter des produits de différentes marques ? Alors, inscrivez-vous en tant que détaillant et profitez de notre offre."
+                    },
+                    "title": {
+                        "brand": "S'inscrire en tant que Marque",
+                        "retailer": "S'inscrire en tant que Détaillant"
+                    },
+                    "titles": "Choisissez votre type d'enregistrement"
+                }
+            }
+        },
+        "nav": {
+            "profile": "Votre Profil",
+            "search": "Rechercher",
+            "settings": "Paramètres",
+            "signout": "Déconnexion"
+        },
         "storefront": {
+            "categorie": {
+                "description": "Explorez les options d'approvisionnement et les conditions négociées avec les fournisseurs pour"
+            },
+            "categories": {
+                "description": "Démarrer le sourcing dans nos domaines de produits les plus actifs.",
+                "title": "Parcourir les catégories"
+            },
+            "description": "\"Connectez-vous avec des fournisseurs vérifiés, gérez les prix négociés et automatisez les commandes récurrentes dans toute votre organisation depuis un espace de travail unifié.\"",
+            "getstarted": "Commencer",
+            "tagline": "Plateforme d'approvisionnement en gros",
+            "talktosales": "Parlez à ventes",
             "title": "Simplifier les achats B2B complexes",
             "welcome": "Bonjour"
         },

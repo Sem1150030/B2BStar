@@ -2,8 +2,8 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col items-start gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-                <h2 class="text-3xl font-bold tracking-tight text-gray-900">Browse Categories</h2>
-                <p class="mt-2 text-sm text-gray-600">Kickstart sourcing across our most active product domains.</p>
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900">{{t ('storefront.categories.title')}}</h2>
+                <p class="mt-2 text-sm text-gray-600">{{t('storefront.categories.description')}}</p>
             </div>
             <div class="flex gap-3">
                 <button type="button" class="inline-flex items-center gap-1 rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow transition hover:bg-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
@@ -27,7 +27,7 @@
                     </div>
                     <div class="p-4">
                         <h3 class="text-sm font-semibold text-gray-900 group-hover:text-indigo-600">{{ $cat->name }}</h3>
-                        <p class="mt-2 line-clamp-2 text-xs text-gray-500">Explore sourcing options and negotiated supplier terms for {{ strtolower($cat->name) }}.</p>
+                        <p class="mt-2 line-clamp-2 text-xs text-gray-500">{{t('storefront.categorie.description')}} {{ strtolower($cat->name) }}.</p>
                     </div>
                 </a>
             @endforeach
