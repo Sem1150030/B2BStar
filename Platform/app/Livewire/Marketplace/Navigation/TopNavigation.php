@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Marketplace\Navigation;
 
+use Auth;
 use Livewire\Component;
 
 class TopNavigation extends Component
@@ -16,12 +17,15 @@ class TopNavigation extends Component
         'de' => 'German',
     ];
 
+    public ?string $role;
+
     /** Current active locale (kept in sync so Blade updates without full page reload) */
     public string $currentLocale;
 
     public function mount(): void
     {
         $this->currentLocale = app()->getLocale();
+        $this->role = Auth::user()->role_type ?? null;
     }
 
     /**
@@ -37,11 +41,9 @@ class TopNavigation extends Component
         session(['app_locale' => $locale]);
         cookie()->queue('app_locale', $locale, 60 * 24 * 365, '/');
 
-    app()->setLocale($locale);
-    $this->currentLocale = $locale;
-    // Emit both Livewire event and browser event; frontend will force reload so whole app re-renders in new locale
-    $this->dispatch('locale-changed', locale: $locale);
-    $this->dispatch('reload-page');
+        app()->setLocale($locale);
+        $this->currentLocale = $locale;
+        $this->dispatch('locale-changed', locale: $locale);
     }
 
 

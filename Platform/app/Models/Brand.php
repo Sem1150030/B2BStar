@@ -18,4 +18,12 @@ class Brand extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    /**
+     * Get the user that owns the brand as a role.
+     */
+    public function user()
+    {
+        return $this->morphOne(User::class, 'role');
+    }
 }

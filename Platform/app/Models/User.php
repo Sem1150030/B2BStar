@@ -45,4 +45,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    /**
+     * Get the parent role model (Brand or others).
+     */
+    public function role()
+    {
+        return $this->morphTo();
+    }
 }
