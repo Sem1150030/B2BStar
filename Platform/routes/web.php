@@ -17,7 +17,9 @@ Route::post('/auth/logout', [AuthController::class, 'logoutAction'])->name('logo
 
 Route::get('/auth/register', [AuthController::class, 'register'])->name('register');
 Route::get('/auth/register/brand', [AuthController::class, 'registerBrand'])->name('register.brand');
+Route::post('/auth/register/brand', [AuthController::class, 'registerBrandAction'])->name('register.brand.action');
 Route::get('/auth/register/retailer', [AuthController::class, 'registerRetailer'])->name('register.retailer');
+
 
 
 

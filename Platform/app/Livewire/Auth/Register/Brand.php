@@ -27,11 +27,7 @@ class Brand extends Component
 
     public function register()
     {
-        $this->validate();
-        // Registration logic here (e.g., create user, assign brand role)
-        // User::create([...]);
-        session()->flash('success', 'Registration successful!');
-        // Optionally redirect or reset form
+
     }
 
     public function render()

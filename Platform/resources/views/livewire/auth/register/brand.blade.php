@@ -14,61 +14,62 @@
             @if (session()->has('success'))
                 <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">{{ session('success') }}</div>
             @endif
-            <form wire:submit.prevent="register" class="space-y-6">
+            <form action="{{ route('register.brand.action') }}" method="POST" class="space-y-6">
+                @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Name</label>
                         <div class="mt-1">
-                            <input type="text" wire:model.defer="name" required placeholder="Brand name" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
+                            <input type="text" name="name" required placeholder="Brand name" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
                         </div>
                         @error('name')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Email address</label>
                         <div class="mt-1">
-                            <input type="email" wire:model.defer="email" required placeholder="you@company.com" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
+                            <input type="email" name="email" required placeholder="you@company.com" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
                         </div>
                         @error('email')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Phone Number</label>
                         <div class="mt-1">
-                            <input type="text" wire:model.defer="phone" required placeholder="Phone number" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
+                            <input type="text" name="phone" required placeholder="Phone number" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
                         </div>
                         @error('phone')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Finance Email</label>
                         <div class="mt-1">
-                            <input type="email" wire:model.defer="finance_email" required placeholder="finance@company.com" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
+                            <input type="email" name="finance_email" required placeholder="finance@company.com" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
                         </div>
                         @error('finance_email')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700">Motto</label>
                         <div class="mt-1">
-                            <input type="text" wire:model.defer="motto" placeholder="Brand motto (optional)" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
+                            <input type="text" name="motto" placeholder="Brand motto (optional)" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
                         </div>
                         @error('motto')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700">Description</label>
                         <div class="mt-1">
-                            <textarea wire:model.defer="description" placeholder="Describe your brand (optional)" rows="3" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600"></textarea>
+                            <textarea name="description" placeholder="Describe your brand (optional)" rows="3" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600"></textarea>
                         </div>
                         @error('description')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Password</label>
                         <div class="mt-1">
-                            <input type="password" wire:model.defer="password" required placeholder="••••••••" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
+                            <input type="password" name="password" required placeholder="••••••••" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
                         </div>
                         @error('password')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
                         <div class="mt-1">
-                            <input type="password" wire:model.defer="password_confirmation" required placeholder="••••••••" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
+                            <input type="password" name="password_confirmation" required placeholder="••••••••" class="block w-full rounded-md border-0 bg-white/50 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:outline-none sm:text-sm ring-gray-300 focus:ring-2 focus:ring-indigo-600" />
                         </div>
                     </div>
                 </div>

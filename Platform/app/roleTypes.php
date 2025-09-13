@@ -2,7 +2,7 @@
 
 namespace App;
 
-enum roleTypes
+enum roleTypes: string
 {
     case BRAND = 'App\Models\Brand';
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -41,28 +42,14 @@ class AuthController extends Controller
     }
 
 
-    public function loginAction(Request $request)
+    public function loginAction(Request $request, AuthService $authService)
     {
-        // Validate incoming credentials
-        $validated = $request->validate([
-            'email' => ['required','email'],
-            'password' => ['required','string','min:6'],
-        ]);
-
-        $credentials = [
-            'email' => $validated['email'],
-            'password' => $validated['password'],
-        ];
-
-        $remember = $request->boolean('remember');
-
-        if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
-            return redirect()->route('storefront')->with('success', 'Logged in successfully.');
+        [$success, $message] = $authService->login($request);
+        if ($success) {
+            return redirect()->route('storefront')->with('success', $message);
         }
-
         return back()->withErrors([
-            'email' => 'Invalid email or password.',
+            'email' => $message,
         ])->onlyInput('email');
     }
 
@@ -72,6 +59,26 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/')->with('success', 'You have been logged out.');
+    }
+
+    public function registerBrandAction(Request $request, AuthService $authService)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|max:30',
+            'finance_email' => 'required|email',
+            'motto' => 'nullable|string|max:100',
+            'description' => 'nullable|string|max:1000',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        [$success, $message] = $authService->registerBrand($data);
+        if ($success) {
+            return redirect()->route('login')->with('success', $message);
+        }
+        return back()->withErrors(['register' => $message])->withInput();
+
     }
 
 }
