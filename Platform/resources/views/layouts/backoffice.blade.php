@@ -18,7 +18,7 @@
 
     <body class=" bg-gray-50 min-h-screen">
         {{-- Top navigation fixed --}}
-        @livewire('marketplace.navigation.top-navigation')
+        @livewire('backoffice.navigation.sidebar')
             <livewire:alerts.toast />
         @if (class_exists(\Livewire\Flux\FluxServiceProvider::class))
             @fluxScripts

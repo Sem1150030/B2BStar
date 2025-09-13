@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\roleTypes;
+use App\RoleTypes;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -58,7 +58,7 @@ class AuthService
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
-                'role_type' => roleTypes::BRAND->value,
+                'role_type' => RoleTypes::BRAND->value,
                 'role_id' => $brand->id,
             ]);
         } catch (\Exception $e) {
@@ -70,7 +70,6 @@ class AuthService
             $brand->delete();
             return [false, 'User creation failed.'];
         }
-        dump($user);
         return [true, 'Registration successful!'];
     }
 }

@@ -21,7 +21,6 @@ class TolgeeService
     public function translate($key, $lang = 'en')
     {
         $cacheKey = "tolgee_{$this->projectId}_{$lang}_{$key}";
-        dump( $this->apiKey );
         return Cache::remember($cacheKey, 3600, function () use ($key, $lang) {
             $response = Http::withHeaders([
                 'X-API-Key' => $this->apiKey

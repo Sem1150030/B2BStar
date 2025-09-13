@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Marketplace\Navigation;
 
-use App\roleTypes;
+
 use Auth;
 use Livewire\Component;
 
@@ -20,6 +20,7 @@ class TopNavigation extends Component
 
     public ?string $role;
 
+
     /** Current active locale (kept in sync so Blade updates without full page reload) */
     public string $currentLocale;
 
@@ -27,7 +28,8 @@ class TopNavigation extends Component
     {
         $this->currentLocale = app()->getLocale();
         $this->role = Auth::user()->role_type ?? null;
-        dump($this->role == roleTypes::BRAND->value);
+
+
     }
 
     /**
@@ -37,6 +39,7 @@ class TopNavigation extends Component
     {
         if (! array_key_exists($locale, $this->languages)) {
             return; // silently ignore invalid
+
         }
 
         // Persist to session & long-lived cookie (1 year)

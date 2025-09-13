@@ -33,14 +33,15 @@
             </button>
         </div>
         <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-            <div class="mr-6">
-                <a href="/backoffice/dashboard"
-                    class="inline-flex items-center border-1  gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-                    <span>Backoffice</span>
 
-                </a>
-            </div>
-
+            @if ($role == 'App\Models\Brand' )
+                <div class="mr-6">
+                    <a href="/backoffice/dashboard"
+                        class="inline-flex items-center border-1  gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                        <span>Backoffice</span>
+                    </a>
+                </div>
+            @endif
             <!-- Language selector (native details) -->
             <div x-data="{ open: false }" class="relative mr-4">
                 <!-- Trigger -->
