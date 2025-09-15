@@ -16,18 +16,26 @@
         @stack('styles')
     </head>
 
-    <body class=" bg-gray-50 min-h-screen">
-        {{-- Top navigation fixed --}}
-        @livewire('backoffice.navigation.sidebar')
-            <livewire:alerts.toast />
+    <body class="bg-gray-50 min-h-screen flex">
+    {{-- Sidebar --}}
+    @livewire('backoffice.navigation.sidebar')
+
+    <div class="flex-1 flex flex-col">
+        <livewire:alerts.toast />
+
+        {{-- Page content --}}
+        <main class="flex-1 p-6">
+            @yield('content')
+        </main>
+
         @if (class_exists(\Livewire\Flux\FluxServiceProvider::class))
             @fluxScripts
         @endif
 
         @stack('modals')
         @stack('scripts')
-        @yield('content')
-
         @livewireScripts
-    </body>
+    </div>
+</body>
+
 </html>
