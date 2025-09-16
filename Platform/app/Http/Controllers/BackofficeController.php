@@ -22,4 +22,12 @@ class BackofficeController extends Controller
         }
         return view('backoffice.products.products');
     }
+
+    public function createProduct()
+    {
+        if (!Gate::allows('access-backoffice')) {
+            return redirect()->route('storefront')->with('error', 'You do not have access to the backoffice.');
+        }
+        return view('backoffice.products.create_product');
+    }
 }

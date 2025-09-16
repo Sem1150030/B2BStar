@@ -26,6 +26,8 @@ Route::get('/auth/register/retailer', [AuthController::class, 'registerRetailer'
 Route::middleware(['auth'])->group(function () {
     Route::get('/backoffice/dashboard', [BackofficeController::class, 'dashboard'])->name('backoffice.dashboard');
     Route::get('/backoffice/products', [BackofficeController::class, 'products'])->name('backoffice.products');
+    Route::get('/backoffice/products/create', [BackofficeController::class, 'createProduct'])->name('backoffice.products.create');
+
 });
 
 Route::get('/lang/{locale}',[LanguageController::class, 'switch'])->name('lang.switch');

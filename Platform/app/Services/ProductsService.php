@@ -27,7 +27,7 @@ class ProductsService
 
     public function getProductsByBrand($brand_id, ?int $limit = null){
         if($limit === null){
-            return Product::where('brand_id', $brand_id)->get();
+            return Product::with('variants')->where('brand_id', $brand_id)->get();
         }
         else{
             return Product::where('brand_id', $brand_id)->limit($limit)->get();
