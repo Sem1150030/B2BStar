@@ -15,7 +15,7 @@ class Table extends Component
     public function mount()
     {
         $this->products = app($this->productsService)->getProductsByBrand(Auth::user()->role_id);
-        ProductVariant
+
 
     }
 

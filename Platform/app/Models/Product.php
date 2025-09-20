@@ -39,4 +39,9 @@ class Product extends Model
     {
         return $query->where('is_published', true);
     }
+
+    public function productImage()
+    {
+        return $this->hasOne(ProductImage::class, 'id', 'product_image_id');
+    }
 }
