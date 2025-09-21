@@ -3,6 +3,7 @@
 namespace App\Livewire\Backoffice\Products;
 
 use App\Services\ImageService;
+use GuzzleHttp\Psr7\Request;
 use Livewire\Component;
 use App\Services\CategoriesService;
 use Livewire\WithFileUploads;
@@ -11,7 +12,6 @@ use Livewire\WithFileUploads;
 class CreateForm extends Component
 {
     use WithFileUploads;
-
     public $categories;
     public $image;
     public $imagePath;
@@ -35,10 +35,7 @@ class CreateForm extends Component
     {
         $this->categories = app(CategoriesService::class)->getAllCategories();
     }
-    public function render()
-    {
-        return view('livewire.backoffice.products.create-form');
-    }
+
 
     public function uploadImage(ImageService $service)
     {
@@ -49,10 +46,24 @@ class CreateForm extends Component
 
     }
 
-    public function submitForm()
+    public function store()
     {
-        $this->uploadImage(app(ImageService::class));
+        // Access all form data via public properties
+        $data = [
+            'name' => $this->name,
+            'category' => $this->category,
+            'is_published' => $this->is_published,
+            'variants' => $this->variants,
+            'image' => $this->image,
+        ];
+        $this->imagePath = $this->uploadImage(app(ImageService::class));
 
+
+    }
+
+    public function render()
+    {
+        return view('livewire.backoffice.products.create-form');
     }
 
 

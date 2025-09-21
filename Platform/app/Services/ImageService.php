@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 
 
-class ImageService extends
+class ImageService
 {
 
     use WithFileUploads;

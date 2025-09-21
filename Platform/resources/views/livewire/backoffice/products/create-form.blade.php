@@ -1,6 +1,6 @@
-<form wire:submit.prevent="store"
+<form wire:submit.prevent="store" method="POST"
     class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 space-y-6 border border-gray-100">
-
+    @csrf
     <!-- Title -->
     <h2 class="text-2xl font-bold text-gray-900">Create Product</h2>
 
