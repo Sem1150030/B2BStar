@@ -5,7 +5,7 @@
       <p class="mt-2 text-m text-gray-700">A list of all the users in your account including their name, title, email and role.</p>
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-      <a href="" type="button" class="cursor-pointer block rounded-md bg-indigo-600 px-3 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+      <a href="/backoffice/products/create" type="button" class="cursor-pointer block rounded-md bg-indigo-600 px-3 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
         Add Product
       </a>
     </div>
@@ -18,6 +18,7 @@
             <table class="relative min-w-full divide-y divide-gray-300">
                 <thead class="bg-gray-50">
                 <tr>
+                    <th scope="col"></th>
                     <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
                     <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">categorie</th>
                     <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">published</th>
@@ -29,8 +30,9 @@
                 <tbody class="divide-y divide-gray-200 bg-white">
                 @foreach ($products as $product)
                 <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $product->productImage }}</td>
                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $product->name }}</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{  $product->categories->name }}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{  $product->category->name }}</td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $product->is_published }}</td>
                     <td class="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                     <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only"></span></a>

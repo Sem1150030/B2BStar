@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->unsignedBigInteger('product_image_id')->nullable()->after('id');
-            $table->string('Name')->nullable();
-            $table->text('Description')->nullable();
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->nullable();
         });
     }

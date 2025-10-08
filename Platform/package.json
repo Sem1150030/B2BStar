@@ -4,9 +4,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-    "dev": "vite",
-    "start": "concurrently \"php artisan translations-sync\" \"php artisan serve\" \"npm run dev\"",
-    "star": "npm run start"
+        "dev": "vite",
+        "start": "concurrently \"php artisan translations-sync\" \"php artisan serve\" \"npm run dev\"",
+        "star": "npm run start"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
@@ -17,5 +17,9 @@
         "postcss": "^8.5.6",
         "tailwindcss": "^4.1.13",
         "vite": "^7.0.4"
+    },
+    "dependencies": {
+        "@tolgee/core": "^6.2.7",
+        "@tolgee/react": "^6.2.7"
     }
 }

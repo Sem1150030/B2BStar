@@ -9,11 +9,9 @@ use App\Http\Controllers\Controller;
 
 class ImageService
 {
-
     use WithFileUploads;
     public function uploadImage($image)
     {
-        $imagePath = $image->store('images', 'public');
-        return $imagePath;
+        return $image->store('images', 'public');
     }
 }

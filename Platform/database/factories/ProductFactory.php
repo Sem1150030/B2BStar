@@ -20,6 +20,7 @@ class ProductFactory extends Factory
             'is_published' => true,
             'published_at' => now(),
             'slug' => Str::slug($name.'-'.Str::random(5)),
+            'SKU' => 'SKU-' . Str::random(8),
         ];
     }
 }

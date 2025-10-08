@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\roleTypes;
-use Gate;
+use App\RoleTypes;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,13 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
-
-            Gate::define('access-backoffice', function ($user) {
-                if ($user->role_type != null){
-                return in_array($user->role_type, ['App\Models\Admin', roleTypes::BRAND->value]);
+        Gate::define('access-backoffice', function ($user) {
+            if ($user->role_type != null){
+                return in_array($user->role_type, ['App\Models\Admin', RoleTypes::BRAND->value]);
             }
-        }
-        );
-}
+        });
+    }
 }

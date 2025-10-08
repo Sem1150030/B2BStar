@@ -1,16 +1,20 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\ProductVariant;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class ProductsService
 {
     public function getProducts(?int $limit = null)
     {
-        if($limit === null){
+        if ($limit === null) {
             return Product::all();
-        }
-        else{
+        } else {
             return Product::limit($limit)->get();
         }
     }
@@ -21,72 +25,104 @@ class ProductsService
     }
 
 
-    public function getProductsByBrand($brand_id, ?int $limit = null){
-        if($limit === null){
+    public function getProductsByBrand($brand_id, ?int $limit = null)
+    {
+        if ($limit === null) {
             return Product::with('variants')->where('brand_id', $brand_id)->get();
-        }
-        else{
+        } else {
             return Product::where('brand_id', $brand_id)->limit($limit)->get();
         }
     }
 
-    public function makeSKU($name, $categorie, $brand){
-        $sku = strtoupper(substr($name, 0, 3)) . '-' .
-        strtoupper(substr($categorie, 0, 3)) . '-' .
-        strtoupper(substr($brand, 0, 3));
-        return $sku;
+    public function makeSKU($name, $categorie, $brand): string
+    {
+        return strtoupper(substr($name, 0, 3)) . '-' .
+            strtoupper(substr($categorie, 0, 3)) . '-' .
+            strtoupper(substr($brand, 0, 3));
+
     }
 
-    public function createProduct($data){
-
-        try{
-            $this->makeSKU($data['Name'], $data['category_id'], $data['brand_id']);
-        }
-        catch(\Exception $e){
+    /**
+     * @throws \Throwable
+     */
+    public function createProduct(array $data): bool
+    {
+        try {
+            $data['SKU'] = $this->makeSKU($data['name'], $data['category_id'], Auth::user()->role_id);
+        } catch (\Exception $e) {
             throw new \Exception("Error generating SKU: " . $e->getMessage());
         }
 
-         if (!isset($data['is_published'])) {
-             $data['is_published'] = false;
-         }
-
-        validator($data, [
-            'Name'          => 'required|string|max:255',
-            'Description'   => 'nullable|string',
-            'price'         => 'required|numeric|min:0',
-            'category_id'   => 'required|exists:categories,id',
-            'brand_id'      => 'required|exists:brands,id',
-            'is_published'  => 'boolean',
-            'SKU'           => 'required|string|max:50|unique:products,SKU',
-        ],
-        )->validate();
-
-        $product = Product::create($data);
-
-        if( !empty($data['variants'])) {
-            foreach($data['variants'] as $variant){
-
-            }
+        if (!isset($data['is_published'])) {
+            $data['is_published'] = false;
         }
+
+        dd($data);
+
+
+        $data['slug'] = \Str::slug($data['name'] . '-' . \Str::random(5));
+        try {
+            validator($data, [
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric|min:0',
+                'category_id' => 'required|exists:categories,id',
+                'brand_id' => 'required|exists:brands,id',
+                'is_published' => 'boolean',
+                'SKU' => 'required|string|max:50|unique:products,SKU',
+                'slug' => 'nullable|string|max:255|unique:products,slug',
+            ])->validate();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e;
+        }
+
+        $productData = collect($data)->only([
+            'name',
+            'description',
+            'price',
+            'category_id',
+            'brand_id',
+            'is_published',
+            'SKU',
+            'slug',
+        ])->toArray();
+
+        DB::transaction(function () use ($productData, $data) {
+            $product = Product::create($productData);
+
+            if (!empty($data['variants']) && is_array($data['variants'])) {
+                foreach ($data['variants'] as $variant) {
+                    $this->createProductVariant($product->id, $variant, $productData['is_published'], $data['images'] ?? null);
+                }
+            }
+        });
+
+        return true;
     }
 
-    public function createProductVariant($product_id, $variantData, ?bool $published, ?array $images){
-        try{
-            $this->makeSKU($variantData['name'], $variantData['category_id'], $variantData['brand_id']);
-        }
-        catch(\Exception $e){
+    public function createProductVariant($product_id, $variantData, ?bool $published, ?array $images)
+    {
+        try {
+            $sku = $this->makeSKU($variantData['name'], $variantData['category_id'], $variantData['brand_id']);
+        } catch (\Exception $e) {
             throw new \Exception("Error generating SKU: " . $e->getMessage());
         }
 
         if (!$published) {
-             $published= false;
-         }
+            $published = false;
+        }
+
+        if (empty($sku) || strlen($sku) > 50) {
+            throw new \Exception("Invalid SKU generated.");
+        }
+        if (ProductVariant::where('SKU', $sku)->exists()) {
+            throw new \Exception("SKU already exists.");
+        }
 
         validator($variantData, [
-            'name'  => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'Description'   => 'nullable|string',
-            'SKU'   => 'required|string|max:50|unique:product_variants,SKU',
+            'Description' => 'nullable|string',
             'is_published' => 'boolean',
             'product_id' => 'required|exists:products,id',
         ])->validate();
@@ -97,13 +133,10 @@ class ProductsService
         $variant = $product->variants()->create([
             'name' => $variantData['name'],
             'price' => $variantData['price'],
-            'SKU' => $variantData['SKU'],
+            'SKU' => $sku,
             'is_published' => $published,
             'Description' => $variantData['Description'] ?? null,
             'product_id' => $product_id,
         ]);
     }
 }
-
-
-

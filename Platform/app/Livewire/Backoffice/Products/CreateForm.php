@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Backoffice\Products;
 
+use App\Http\Controllers\BackofficeController;
 use App\Services\ImageService;
-use GuzzleHttp\Psr7\Request;
+use App\Services\ProductsService;
 use Livewire\Component;
 use App\Services\CategoriesService;
 use Livewire\WithFileUploads;
-
 
 class CreateForm extends Component
 {
@@ -16,12 +16,17 @@ class CreateForm extends Component
     public $image;
     public $imagePath;
 
-    public $name, $category, $is_published = false;
+    public $desription;
+    public float $price;
+
+    public int $category;
+
+    public $name, $is_published = false;
     public $variants = [];
 
     public function addVariant()
     {
-        $this->variants[] = ['name' => '', 'price' => ''];
+        $this->variants[] = ['name' => '', 'price' => 0, 'image' => null];
     }
 
     public function removeVariant($index)
@@ -30,43 +35,61 @@ class CreateForm extends Component
         $this->variants = array_values($this->variants); // reindex array
     }
 
-
     public function mount()
     {
         $this->categories = app(CategoriesService::class)->getAllCategories();
     }
 
-
-    public function uploadImage(ImageService $service)
+    public function uploadImage(ImageService $service, $imageFile)
     {
         $this->validate([
             'image' => 'image|max:1024',
         ]);
-        $this->imagePath = $service->uploadImage($this->image);
-
+        return $service->uploadImage($imageFile);
     }
 
-    public function store()
+    public function store(): void
     {
-        // Access all form data via public properties
+        $service = app(ImageService::class);
+        $mainImagePath = null;
+        if ($this->image) {
+            $mainImagePath = $this->uploadImage($service, $this->image);
+            //TODO: Safe image
+        }
+        $variantsWithImages = [];
+        foreach ($this->variants as $variant) {
+            $variantImagePath = null;
+            if (!empty($variant['image'])) {
+                $variantImagePath = $this->uploadImage($service, $variant['image']);
+            }
+            $variantsWithImages[] = [
+                'name' => $variant['name'],
+                'price' => $variant['price'],
+                'image' => $variantImagePath,
+            ];
+        }
+
         $data = [
             'name' => $this->name,
-            'category' => $this->category,
+            'price' => $this->price,
+            'category_id' => $this->category,
             'is_published' => $this->is_published,
-            'variants' => $this->variants,
-            'image' => $this->image,
+            'variants' => $variantsWithImages,
+            'image' => $mainImagePath,
+            'description' => $this->desription,
+            'brand_id' => auth()->user()->role_id,
         ];
-        $this->imagePath = $this->uploadImage(app(ImageService::class));
 
-
+        try {
+            app(BackofficeController::class)->storeProduct($data);
+            session()->flash('success', 'Product created successfully.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error creating product: ' . $e->getMessage());
+        }
     }
 
     public function render()
     {
         return view('livewire.backoffice.products.create-form');
     }
-
-
-
-
 }

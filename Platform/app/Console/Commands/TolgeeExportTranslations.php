@@ -6,17 +6,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 
-class TranslationsSync extends Command
-{
-    protected $signature = 'translations-sync';
-    protected $description = 'Sync all translations from Tolgee for en, nl, fr, de';
-
-    public function handle()
-    {
-        $this->call('tolgee:export-translations');
-    }
-}
-
 class TolgeeExportTranslations extends Command
 {
     protected $signature = 'tolgee:export-translations {lang?}';

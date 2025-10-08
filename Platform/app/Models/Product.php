@@ -11,7 +11,14 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'brand_id', 'category_id', 'has_multiple_variants', 'is_published', 'published_at', 'slug'
+        'name',
+        'description',
+        'price',
+        'category_id',
+        'brand_id',
+        'is_published',
+        'SKU',
+        'slug',
     ];
 
     protected $casts = [
@@ -19,6 +26,8 @@ class Product extends Model
         'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];
+
+
 
     public function brand()
     {

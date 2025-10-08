@@ -9,7 +9,8 @@
         <nav class="flex-1">
             <ul class="space-y-2">
                 <li>
-                    <a href="#" class="flex items-center px-3 py-2 rounded-lg font-semibold text-gray-900 bg-gray-100">
+                    <a href="/backoffice/dashboard"
+                       class="flex items-center px-3 py-2 rounded-lg font-semibold text-gray-700 @if(request()->is('backoffice/dashboard')) bg-gray-100 text-gray-900 @endif">
                         <span class="material-icons mr-3">home</span>
                         Dashboard
                     </a>
@@ -22,7 +23,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <a href="/backoffice/products" class="flex items-center px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 @if(request()->is('backoffice/products')) bg-gray-100 text-gray-900 @endif">
                         <span class="material-icons mr-3">local_offer</span>
                         Products
                     </a>

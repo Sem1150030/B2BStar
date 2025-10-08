@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/backoffice/dashboard', [BackofficeController::class, 'dashboard'])->name('backoffice.dashboard');
     Route::get('/backoffice/products', [BackofficeController::class, 'products'])->name('backoffice.products');
     Route::get('/backoffice/products/create', [BackofficeController::class, 'createProduct'])->name('backoffice.products.create');
+    Route::post('/backoffice/products/create', [BackofficeController::class, 'storeProduct'])->name('backoffice.products.store');
 
 });
 
