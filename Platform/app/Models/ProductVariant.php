@@ -24,9 +24,9 @@ class ProductVariant extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function images()
+    public function productImage()
     {
-        return $this->hasMany(ProductImage::class);
+        return $this->morphOne(ProductImage::class, 'imageable');
     }
 
     public function discounts()

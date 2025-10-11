@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->unsignedBigInteger('product_image_id')->nullable()->after('id');
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->nullable();
@@ -25,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn(['product_image_id', 'Name', 'Description', 'price']);
+            $table->dropColumn(['Name', 'Description', 'price']);
         });
     }
 };

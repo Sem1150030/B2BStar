@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backoffice\Products;
 
+use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Services\ProductsService;
 use Auth;
@@ -15,8 +16,6 @@ class Table extends Component
     public function mount()
     {
         $this->products = app($this->productsService)->getProductsByBrand(Auth::user()->role_id);
-
-
     }
 
     public function render()

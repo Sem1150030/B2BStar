@@ -90,9 +90,10 @@ class DatabaseSeeder extends Seeder
                             ->count($variantCount)
                             ->create(['product_id' => $product->id])
                             ->each(function (ProductVariant $variant) {
-                                // Images
+                                // Images - using polymorphic relationship
                                 ProductImage::factory()->count(1)->create([
-                                    'product_variant_id' => $variant->id,
+                                    'imageable_type' => ProductVariant::class,
+                                    'imageable_id' => $variant->id,
                                 ]);
 
                                 // Optional discount (~50% chance)

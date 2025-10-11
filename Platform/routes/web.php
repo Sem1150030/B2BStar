@@ -20,7 +20,7 @@ Route::get('/auth/register/brand', [AuthController::class, 'registerBrand'])->na
 Route::post('/auth/register/brand', [AuthController::class, 'registerBrandAction'])->name('register.brand.action');
 Route::get('/auth/register/retailer', [AuthController::class, 'registerRetailer'])->name('register.retailer');
 
-
+Route::get('categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
 
 
 Route::middleware(['auth'])->group(function () {

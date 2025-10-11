@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class Product extends Model
 {
@@ -44,13 +46,19 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function productImage()
+    {
+        return $this->morphOne(ProductImage::class, 'imageable');
+    }
+
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
     }
 
-    public function productImage()
+    public function scopeCategory(Builder $query, $categoryId): Builder
     {
-        return $this->hasOne(ProductImage::class, 'id', 'product_image_id');
+        return $query->where('category_id', $categoryId);
     }
+
 }

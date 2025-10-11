@@ -1,4 +1,3 @@
-
 <form wire:submit.prevent="store" method="POST" enctype="multipart/form-data"
     class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 space-y-6 border border-gray-100">
     @csrf

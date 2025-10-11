@@ -43,7 +43,7 @@ class CreateForm extends Component
     public function uploadImage(ImageService $service, $imageFile)
     {
         $this->validate([
-            'image' => 'image|max:1024',
+            'image' => 'image|mimes:jpeg,jpg,png,webp|max:2048',
         ]);
         return $service->uploadImage($imageFile);
     }

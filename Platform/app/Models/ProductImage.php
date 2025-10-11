@@ -10,16 +10,10 @@ class ProductImage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'product_variant_id', 'main_url', 'opt_url', 'opt2_url', 'opt3_url'
+        'imageable_id', 'imageable_type', 'main_url', 'opt_url', 'opt2_url', 'opt3_url'
     ];
 
-    public function variant()
-    {
-        return $this->belongsTo(ProductVariant::class, 'product_variant_id');
-    }
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'id', 'product_image_id');
+    public function imageable(){
+        return $this->morphTo();
     }
 }

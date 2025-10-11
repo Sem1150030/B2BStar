@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_variant_id')->constrained('product_variants')->cascadeOnDelete();
+            $table->morphs('imageable');
             $table->string('main_url');
             $table->string('opt_url')->nullable();
             $table->string('opt2_url')->nullable();

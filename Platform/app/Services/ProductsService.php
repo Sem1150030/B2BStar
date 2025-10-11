@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Validate;
 
 
 class ProductsService
@@ -28,9 +30,9 @@ class ProductsService
     public function getProductsByBrand($brand_id, ?int $limit = null)
     {
         if ($limit === null) {
-            return Product::with('variants')->where('brand_id', $brand_id)->get();
+            return Product::with(['variants', 'productImage'])->where('brand_id', $brand_id)->get();
         } else {
-            return Product::where('brand_id', $brand_id)->limit($limit)->get();
+            return Product::with(['variants', 'productImage'])->where('brand_id', $brand_id)->limit($limit)->get();
         }
     }
 
@@ -39,6 +41,19 @@ class ProductsService
         return strtoupper(substr($name, 0, 3)) . '-' .
             strtoupper(substr($categorie, 0, 3)) . '-' .
             strtoupper(substr($brand, 0, 3));
+    }
+
+    public function storeProductImage($id, $model, $imagePath)
+    {
+
+        //TODO: handle auth
+        if($imagePath){
+            ProductImage::create([
+               'main_url' => $imagePath,
+               'imageable_id' => $id,
+               'imageable_type' => $model,
+            ]);
+        }
 
     }
 
@@ -56,9 +71,6 @@ class ProductsService
         if (!isset($data['is_published'])) {
             $data['is_published'] = false;
         }
-
-        dd($data);
-
 
         $data['slug'] = \Str::slug($data['name'] . '-' . \Str::random(5));
         try {
@@ -89,6 +101,7 @@ class ProductsService
 
         DB::transaction(function () use ($productData, $data) {
             $product = Product::create($productData);
+            $this->storeProductImage($product->id, Product::class, $data['image']);
 
             if (!empty($data['variants']) && is_array($data['variants'])) {
                 foreach ($data['variants'] as $variant) {
