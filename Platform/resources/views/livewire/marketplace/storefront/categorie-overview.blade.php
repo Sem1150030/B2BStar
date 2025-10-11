@@ -17,7 +17,7 @@
 
         <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach($categories as $cat)
-                <a href="#" class="group relative block overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <a href="/categories/{{$cat->id}}" class="group relative block overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     <div class="relative h-40 overflow-hidden">
                         <img src="{{ $this->imageFor($cat) }}" alt="{{ $cat->name }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                         <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-gray-900/10 to-transparent"></div>

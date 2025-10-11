@@ -38,9 +38,10 @@ class ProductsService
 
     public function makeSKU($name, $categorie, $brand): string
     {
+        $random = strtoupper(substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 4));
         return strtoupper(substr($name, 0, 3)) . '-' .
             strtoupper(substr($categorie, 0, 3)) . '-' .
-            strtoupper(substr($brand, 0, 3));
+            strtoupper(substr($brand, 0, 3)) . '-' . $random;
     }
 
     public function storeProductImage($id, $model, $imagePath)

@@ -45,7 +45,7 @@ class CreateForm extends Component
         $this->validate([
             'image' => 'image|mimes:jpeg,jpg,png,webp|max:2048',
         ]);
-        return $service->uploadImage($imageFile);
+        return $service->uploadImageProduct($imageFile);
     }
 
     public function store(): void

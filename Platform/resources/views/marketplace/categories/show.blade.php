@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    @livewire('marketplace.category.products-component', ['categoryId' => $categoryId])
+    @livewire('marketplace.category.products-component', ['category' => $category])
 @endsection

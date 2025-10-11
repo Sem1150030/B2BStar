@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Marketplace\Category;
 
+use App\Models\Category;
 use App\Models\Product;
 use Livewire\Component;
 
 class ProductsComponent extends Component
 {
-    public Product $products;
+    public $products;
 
-    public int $categoryId;
+    public Category $category;
 
-    public function mount($categoryId){
-        $this->products = Product::published()
-            ->category($categoryId)
-            ->get();
+    public function mount($category){
+        $this->category = $category;
+        $this->products = $category->products;
     }
 
     public function render()

@@ -10,8 +10,8 @@ use App\Http\Controllers\Controller;
 class ImageService
 {
     use WithFileUploads;
-    public function uploadImage($image)
+    public function uploadImageProduct($image)
     {
-        return $image->store('images', 'public');
+        return $image->store('images/ProductImages', 'public');
     }
 }
