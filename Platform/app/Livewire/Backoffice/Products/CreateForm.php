@@ -16,7 +16,7 @@ class CreateForm extends Component
     public $image;
     public $imagePath;
 
-    public $desription;
+    public $description;
     public float $price;
 
     public int $category;
@@ -76,7 +76,7 @@ class CreateForm extends Component
             'is_published' => $this->is_published,
             'variants' => $variantsWithImages,
             'image' => $mainImagePath,
-            'description' => $this->desription,
+            'description' => $this->description,
             'brand_id' => auth()->user()->role_id,
         ];
 

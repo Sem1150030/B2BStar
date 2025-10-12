@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Basic test user
+//         Basic test user
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.coX',
@@ -74,11 +74,11 @@ class DatabaseSeeder extends Seeder
 
     // Create brands with nested products & variants
         Brand::factory()
-            ->count(5)
+            ->count(30)
             ->create()
             ->each(function (Brand $brand) {
                 Product::factory()
-                    ->count(3)
+                    ->count(25)
                     ->create(['brand_id' => $brand->id])
                     ->each(function (Product $product) {
             // Random category assignment
