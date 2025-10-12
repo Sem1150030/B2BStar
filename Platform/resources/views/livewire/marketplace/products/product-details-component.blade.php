@@ -60,7 +60,7 @@
                 @endif
             </div>
 
-            <div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
+            <div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0 lg:max-w-2xl">
                 @if($product->brand)
                 <div class="flex items-center gap-3 mb-4">
                     <span class="inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-200">
@@ -89,12 +89,12 @@
 
                 <!-- Description -->
                 @if($product->description)
-                <div class="mt-6">
-                    <h3 class="text-sm font-medium text-gray-900">Description</h3>
-                    <div class="mt-2 prose prose-sm text-gray-600">
-                        <p>{{ $product->description }}</p>
+                    <div class="mt-6">
+                        <h3 class="text-sm font-medium text-gray-900">Description</h3>
+                        <div class="mt-2 prose prose-sm text-gray-600 max-w-prose">
+                            <p>{{ $product->description }}</p>
+                        </div>
                     </div>
-                </div>
                 @endif
 
                 @if($product->variants && $product->variants->count() > 0)
@@ -105,28 +105,30 @@
                     </div>
                     <div class="mt-4 grid grid-cols-1 gap-3">
                         @foreach($product->variants as $variant)
-                        <div class="relative flex items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-3 hover:border-indigo-600 cursor-pointer transition">
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium text-gray-900">{{ $variant->name }}</span>
-                                @if($variant->description)
-                                <span class="text-xs text-gray-500 mt-0.5">{{ $variant->description }}</span>
-                                @endif
-                                @if($variant->sku)
-                                <span class="text-xs text-gray-400 mt-1">SKU: {{ $variant->sku }}</span>
-                                @endif
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-lg font-semibold text-gray-900">${{ number_format($variant->price, 2) }}</span>
-                                @if($variant->is_published)
-                                    <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
-                                        In Stock
-                                    </span>
+                        <div class="relative flex flex-col rounded-lg border border-gray-300 bg-white px-4 py-3 hover:border-indigo-600 cursor-pointer transition">
+                            <div class="flex items-center justify-between">
+                                <div class="flex flex-col flex-1 min-w-0">
+                                    <span class="text-sm font-medium text-gray-900">{{ $variant->name }}</span>
+                                    @if($variant->description)
+                                        <span class="text-xs text-gray-500 mt-1 line-clamp-2">{{ Str::limit($variant->description, 130) }}</span>
+                                    @endif
+                                </div>
+                                <div class="flex items-center gap-2 ml-4 flex-shrink-0">
+                                    <span class="text-lg font-semibold text-gray-900">${{ number_format($variant->price, 2) }}</span>
+                                    @if($variant->is_published)
+                                        <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
+                                            In Stock
+                                        </span>
                                     @else
-                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
-                                        Out of Stock
-                                    </span>
-                                @endif
+                                        <span class="inline-flex items-center rounded-full bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">
+                                            Out of Stock
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
+                            @if($variant->sku)
+                            <span class="text-xs text-gray-400 mt-2">SKU: {{ $variant->sku }}</span>
+                            @endif
                         </div>
                         @endforeach
                     </div>

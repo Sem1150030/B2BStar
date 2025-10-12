@@ -61,7 +61,7 @@
                         €{{ number_format($product->price, 2) }}
                     </td>
                     <td class="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">
+                        <a href="{{ route('backoffice.products.edit', $product->id) }}" class="text-indigo-600 hover:text-indigo-900">
                             Edit<span class="sr-only">, {{ $product->name }}</span>
                         </a>
                     </td>
