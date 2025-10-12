@@ -1,4 +1,4 @@
-clear-images-p: ## Delete all product files in the public/images directory
+clear-images: ## Delete all product files in the public/images directory
 	@echo "🧹 Clearing images..."
 	rm -rf storage/app/public/images/ProductImages/* || true
 	@echo "✅ Image folder cleared."

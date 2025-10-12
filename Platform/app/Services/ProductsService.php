@@ -50,13 +50,31 @@ class ProductsService
 
         //TODO: handle auth
         if($imagePath){
-            ProductImage::create([
+            return ProductImage::create([
                'main_url' => $imagePath,
                'imageable_id' => $id,
                'imageable_type' => $model,
             ]);
         }
+        return null;
+    }
 
+    public function storeOptionalImages(ProductImage $productImage, $imagePaths = [])
+    {
+        if($imagePaths)
+        {
+            $i = 1;
+            foreach($imagePaths as $imagePath) {
+                if($i > 3) break;
+                $key = $i == 1 ? 'opt_url' : 'opt' . $i . '_url';
+
+                $productImage->$key = $imagePath;
+                $i++;
+                dump($i);
+            }
+            $productImage->save();
+        }
+        return true;
     }
 
     /**
@@ -107,8 +125,15 @@ class ProductsService
                 $product = Product::create($productData);
 
                 if (isset($data['image'])) {
-                    $this->storeProductImage($product->id, Product::class, $data['image']);
+                    $productImage = $this->storeProductImage($product->id, Product::class, $data['image']);
+
+                    if ($productImage && isset($data['optional_images'])){
+                        $this->storeOptionalImages($productImage, $data['optional_images']);
+                    }
+
                 }
+
+
 
                 if (!empty($data['variants']) && is_array($data['variants'])) {
                     foreach ($data['variants'] as $variant) {
@@ -159,7 +184,11 @@ class ProductsService
 
         // Store variant image if provided
         if (isset($validatedData['image']) && !empty($validatedData['image'])) {
-            $this->storeProductImage($variant->id, ProductVariant::class, $validatedData['image']);
+            $productImage = $this->storeProductImage($variant->id, ProductVariant::class, $validatedData['image']);
+
+            if ($productImage && isset($variantData['optional_images'])){
+                $this->storeOptionalImages($productImage, $variantData['optional_images']);
+            }
         }
 
         return $variant;

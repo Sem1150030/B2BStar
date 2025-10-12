@@ -31,16 +31,13 @@ class CategorieOverview extends Component
 
     public function imageFor(Category $cat): string
     {
-        $candidates = [
-            strtolower(str_replace(['&',' '], ['', '-'], $cat->slug)),
-            strtolower(str_replace(['&',' '], ['', '-'], $cat->name)),
-        ];
-        foreach ($candidates as $key) {
-            if (isset($this->fallbackImages[$key])) {
-                return $this->fallbackImages[$key];
-            }
+        // First try to use the image_path from the database
+        if (!empty($cat->image_path)) {
+            return asset('storage/images/Stock/' . $cat->image_path);
         }
-        return $this->fallbackImages['default'];
+
+        // Fallback to default placeholder if no image is set
+        return 'https://images.unsplash.com/photo-1604335399105-a0c924c6b742?auto=format&fit=crop&w=800&q=80';
     }
 
     public function render(): View

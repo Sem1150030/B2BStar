@@ -58,27 +58,87 @@
         <input type="file" wire:model="image" id="image" accept="image/*"
                class="py-2 px-2 rounded-md mt-1 block w-full border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-all hover:shadow-md">
         @error('image') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+
+        @if($image)
+            <div class="mt-2 text-sm text-green-600">✓ Main image selected</div>
+        @endif
     </div>
+
+    <!-- Optional Additional Images (shown only when main image is set) -->
+    @if($image)
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Additional Images (Optional - up to 3)</label>
+        <div class="space-y-3">
+            @for($i = 0; $i < 3; $i++)
+                <div>
+                    <label for="optionalImage{{ $i }}" class="block text-xs text-gray-600 mb-1">Additional Image {{ $i + 1 }}</label>
+                    <input type="file" wire:model="optionalImages.{{ $i }}" id="optionalImage{{ $i }}" accept="image/*"
+                           class="py-2 px-2 rounded-md block w-full border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-all hover:shadow-md">
+                    @error('optionalImages.' . $i) <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                </div>
+            @endfor
+        </div>
+    </div>
+    @endif
 
     <!-- Variants -->
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Variants</label>
         <div class="space-y-4">
             @foreach ($this->variants as $index => $variant)
-                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex flex-col md:flex-row md:items-center gap-4 shadow-sm">
-                    <div class="flex-1 flex flex-col md:flex-row gap-2">
-                        <input type="text" wire:model="variants.{{ $index }}.name" placeholder="Variant Name"
-                               class="py-2 px-3 rounded border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm w-full md:w-1/3" />
-                        <input type="number" wire:model="variants.{{ $index }}.price" placeholder="Variant Price"
-                               class="py-2 px-3 rounded border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm w-full md:w-1/4" step="0.01" min="0" />
-                        <input type="file" wire:model="variants.{{ $index }}.image" accept="image/*"
-                               class="py-2 px-3 rounded border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm w-full md:w-1/3" />
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-4 shadow-sm">
+                    <!-- Variant Header with Name, Price, Image and Remove Button -->
+                    <div class="flex flex-col md:flex-row md:items-start gap-4">
+                        <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div>
+                                <label for="variantName{{ $index }}" class="block text-xs font-medium text-gray-600 mb-1">Variant Name</label>
+                                <input type="text" wire:model="variants.{{ $index }}.name" id="variantName{{ $index }}" placeholder="e.g., Small, Blue"
+                                       class="py-2 px-3 rounded border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm w-full" />
+                            </div>
+                            <div>
+                                <label for="variantPrice{{ $index }}" class="block text-xs font-medium text-gray-600 mb-1">Price (€)</label>
+                                <input type="number" wire:model="variants.{{ $index }}.price" id="variantPrice{{ $index }}" placeholder="0.00"
+                                       class="py-2 px-3 rounded border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm w-full" step="0.01" min="0" />
+                            </div>
+                            <div>
+                                <label for="variantImage{{ $index }}" class="block text-xs font-medium text-gray-600 mb-1">Main Image</label>
+                                <input type="file" wire:model="variants.{{ $index }}.image" id="variantImage{{ $index }}" accept="image/*"
+                                       class="py-2 px-3 rounded border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm w-full" />
+                            </div>
+                        </div>
+                        <div class="flex md:ml-auto md:pt-5">
+                            <button type="button" wire:click="removeVariant({{ $index }})"
+                                    class="px-3 py-1.5 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs font-semibold transition">Remove</button>
+                        </div>
                     </div>
-                    <div class="flex md:ml-auto">
-                        <button type="button" wire:click="removeVariant({{ $index }})"
-                                class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs font-semibold transition">Remove</button>
+
+                    <!-- Variant Description -->
+                    <div>
+                        <label for="variantDescription{{ $index }}" class="block text-xs font-medium text-gray-600 mb-1">Description (Optional)</label>
+                        <textarea wire:model="variants.{{ $index }}.description" id="variantDescription{{ $index }}"
+                                  placeholder="Describe this variant's unique features..."
+                                  rows="2"
+                                  class="py-2 px-3 rounded border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm w-full resize-none"></textarea>
                     </div>
-                    @error('variants.' . $index . '.image') <span class="text-red-600 text-xs mt-2">{{ $message }}</span> @enderror
+
+                    @error('variants.' . $index . '.image') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+
+                    <!-- Optional Additional Images for Variant (shown only when variant's main image is set) -->
+                    @if(!empty($variant['image']))
+                    <div class="pl-4 border-l-2 border-indigo-200">
+                        <label class="block text-xs font-medium text-gray-600 mb-2">Additional Images for this Variant (Optional - up to 3)</label>
+                        <div class="space-y-2">
+                            @for($i = 0; $i < 3; $i++)
+                                <div>
+                                    <label for="variantOptionalImage{{ $index }}_{{ $i }}" class="block text-xs text-gray-500 mb-1">Additional Image {{ $i + 1 }}</label>
+                                    <input type="file" wire:model="variants.{{ $index }}.optionalImages.{{ $i }}" id="variantOptionalImage{{ $index }}_{{ $i }}" accept="image/*"
+                                           class="py-1.5 px-2 rounded border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-xs w-full">
+                                    @error('variants.' . $index . '.optionalImages.' . $i) <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                                </div>
+                            @endfor
+                        </div>
+                    </div>
+                    @endif
                 </div>
             @endforeach
         </div>

@@ -14,6 +14,8 @@ class CreateForm extends Component
     use WithFileUploads;
     public $categories;
     public $image;
+
+    public $optionalImages = [null, null, null];
     public $imagePath;
 
     public $description;
@@ -26,13 +28,13 @@ class CreateForm extends Component
 
     public function addVariant()
     {
-        $this->variants[] = ['name' => '', 'price' => 0, 'image' => null];
+        $this->variants[] = ['name' => '', 'price' => 0, 'image' => null, 'description' => null, 'optionalImages' => [null, null, null]];
     }
 
     public function removeVariant($index)
     {
         unset($this->variants[$index]);
-        $this->variants = array_values($this->variants); // reindex array
+        $this->variants = array_values($this->variants);
     }
 
     public function mount()
@@ -56,16 +58,37 @@ class CreateForm extends Component
             $mainImagePath = $this->uploadImage($service, $this->image);
             //TODO: Safe image
         }
+
+        // Handle optional images
+        $optionalImagePaths = [];
+        foreach ($this->optionalImages as $optionalImage) {
+            if ($optionalImage) {
+                $optionalImagePaths[] = $this->uploadImage($service, $optionalImage);
+            }
+        }
+
         $variantsWithImages = [];
         foreach ($this->variants as $variant) {
             $variantImagePath = null;
             if (!empty($variant['image'])) {
                 $variantImagePath = $this->uploadImage($service, $variant['image']);
             }
+
+            $variantOptionalImagePaths = [];
+            if (!empty($variant['optionalImages'])) {
+                foreach ($variant['optionalImages'] as $variantOptionalImage) {
+                    if ($variantOptionalImage) {
+                        $variantOptionalImagePaths[] = $this->uploadImage($service, $variantOptionalImage);
+                    }
+                }
+            }
+
             $variantsWithImages[] = [
                 'name' => $variant['name'],
                 'price' => $variant['price'],
                 'image' => $variantImagePath,
+                'optional_images' => $variantOptionalImagePaths,
+                'description' => $variant['description'] ?? null,
             ];
         }
 
@@ -76,6 +99,7 @@ class CreateForm extends Component
             'is_published' => $this->is_published,
             'variants' => $variantsWithImages,
             'image' => $mainImagePath,
+            'optional_images' => $optionalImagePaths,
             'description' => $this->description,
             'brand_id' => auth()->user()->role_id,
         ];

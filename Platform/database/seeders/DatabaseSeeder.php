@@ -35,50 +35,51 @@ class DatabaseSeeder extends Seeder
 
         // Create (or ensure) a curated list of marketplace categories
         $categoryNames = [
-            'Electronics',
-            'Computers & Accessories',
-            'Smartphones & Tablets',
-            'Home & Kitchen',
-            'Furniture',
-            'Health & Personal Care',
-            'Beauty & Grooming',
-            'Sports & Outdoors',
-            'Fitness & Training',
-            'Toys & Games',
-            'Baby & Kids',
-            'Fashion & Apparel',
-            'Shoes & Footwear',
-            'Jewelry & Watches',
-            'Books & Media',
-            'Office & Stationery',
-            'Pet Supplies',
-            'Automotive',
-            'Tools & Home Improvement',
-            'Garden & Outdoor',
-            'Groceries & Gourmet',
-            'Arts & Crafts',
-            'Music Instruments',
-            'Travel & Luggage',
-            'Industrial & Scientific',
+            'Electronics' => 'Electronics.jpeg',
+            'Computers & Accessories' => 'COMPUTERS.jpeg',
+            'Smartphones & Tablets' => 'Phones.jpeg',
+            'Home & Kitchen' => 'Kitchen.jpeg',
+            'Furniture' => 'Furniture.jpeg',
+            'Health & Personal Care' => 'health.jpeg',
+            'Beauty & Grooming' => 'This elegant grooming set includes everything he….jpeg',
+            'Sports & Outdoors' => 'Sports.jpeg',
+            'Fitness & Training' => 'Sports.jpeg',
+            'Toys & Games' => 'Toys.jpeg',
+            'Baby & Kids' => '13923f69-b33b-4239-bd6d-160a5e6a2a3e.jpeg',
+            'Fashion & Apparel' => 'Flickr.jpeg',
+            'Shoes & Footwear' => 'Flickr.jpeg',
+            'Jewelry & Watches' => 'Watch.jpeg',
+            'Books & Media' => 'Books.jpeg',
+            'Office & Stationery' => 'Office.jpeg',
+            'Pet Supplies' => 'PetSupplies.jpeg',
+            'Automotive' => 'Automotive.jpeg',
+            'Tools & Home Improvement' => 'Furniture.jpeg',
+            'Garden & Outdoor' => 'Garden.jpeg',
+            'Groceries & Gourmet' => 'Gourmet.jpeg',
+            'Arts & Crafts' => 'Arts&Crafts.jpeg',
+            'Music Instruments' => 'Instrument.jpeg',
+            'Travel & Luggage' => 'Travel.jpeg',
+            'Industrial & Scientific' => 'Scientific.jpeg',
         ];
 
-        $categories = collect($categoryNames)->map(function (string $name) {
+        $categories = collect($categoryNames)->map(function (string $imagePath, string $name) {
             return Category::firstOrCreate(
                 ['slug' => Str::slug($name)],
                 [
                     'name' => $name,
-                    'description' => $name . ' category'
+                    'description' => $name . ' category',
+                    'image_path' => $imagePath
                 ]
             );
         });
 
     // Create brands with nested products & variants
         Brand::factory()
-            ->count(30)
+            ->count(5)
             ->create()
             ->each(function (Brand $brand) {
                 Product::factory()
-                    ->count(25)
+                    ->count(5)
                     ->create(['brand_id' => $brand->id])
                     ->each(function (Product $product) {
             // Random category assignment
