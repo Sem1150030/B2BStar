@@ -79,7 +79,7 @@
                             <p class="text-xs text-gray-600 mb-2">Current Image:</p>
                             <img src="{{ asset('storage/' . $existingMainImage) }}"
                                  alt="Current product image"
-                                 class="w-full max-w-md h-64 object-cover rounded-lg border-2 border-gray-200 shadow-sm">
+                                 class="w-full max-w-md h-auto  object-cover rounded-lg border-2 border-gray-200 shadow-sm">
                         </div>
                     @endif
 
