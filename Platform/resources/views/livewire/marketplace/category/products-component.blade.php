@@ -5,11 +5,11 @@
             <div class="absolute inset-0 bg-gradient-to-b from-indigo-50/50 to-white"></div>
         </div>
 
-        <div class="mx-auto max-w-7xl px-4 pt-32 pb-12 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl px-4 pt-38 pb-12 sm:px-6 lg:px-8">
             <div class="flex items-center gap-2 text-sm text-gray-500">
                 <a href="/" class="hover:text-gray-900 transition">Home</a>
                 <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    <path stroke-linecap=s"round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
                 <span class="text-gray-900 font-medium">{{ $category->name }}</span>
             </div>

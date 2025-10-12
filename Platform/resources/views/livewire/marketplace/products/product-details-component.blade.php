@@ -118,13 +118,13 @@
                             <div class="flex items-center gap-2">
                                 <span class="text-lg font-semibold text-gray-900">${{ number_format($variant->price, 2) }}</span>
                                 @if($variant->is_published)
-                                <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
-                                    In Stock
-                                </span>
-                                @else
-                                <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
-                                    Out of Stock
-                                </span>
+                                    <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
+                                        In Stock
+                                    </span>
+                                    @else
+                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+                                        Out of Stock
+                                    </span>
                                 @endif
                             </div>
                         </div>

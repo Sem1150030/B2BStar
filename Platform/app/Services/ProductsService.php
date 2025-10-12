@@ -8,6 +8,7 @@ use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
+use function Livewire\store;
 
 
 class ProductsService
@@ -74,6 +75,7 @@ class ProductsService
         }
 
         $data['slug'] = \Str::slug($data['name'] . '-' . \Str::random(5));
+
         try {
             validator($data, [
                 'name' => 'required|string|max:255',
@@ -100,57 +102,66 @@ class ProductsService
             'slug',
         ])->toArray();
 
-        DB::transaction(function () use ($productData, $data) {
-            $product = Product::create($productData);
-            $this->storeProductImage($product->id, Product::class, $data['image']);
+        try {
+            DB::transaction(function () use ($productData, $data) {
+                $product = Product::create($productData);
 
-            if (!empty($data['variants']) && is_array($data['variants'])) {
-                foreach ($data['variants'] as $variant) {
-                    $this->createProductVariant($product->id, $variant, $productData['is_published'], $data['images'] ?? null);
+                if (isset($data['image'])) {
+                    $this->storeProductImage($product->id, Product::class, $data['image']);
                 }
-            }
-        });
+
+                if (!empty($data['variants']) && is_array($data['variants'])) {
+                    foreach ($data['variants'] as $variant) {
+                        $this->createProductVariant($variant, $product);
+                    }
+                }
+            });
+        } catch (\Exception $e) {
+            throw new \Exception("Error creating product: " . $e->getMessage());
+        }
 
         return true;
     }
 
-    public function createProductVariant($product_id, $variantData, ?bool $published, ?array $images)
+    public function createProductVariant($variantData, $product)
     {
         try {
-            $sku = $this->makeSKU($variantData['name'], $variantData['category_id'], $variantData['brand_id']);
+            $sku = $this->makeSKU($variantData['name'], $product->category_id, Auth::User()->role_id);
         } catch (\Exception $e) {
-            throw new \Exception("Error generating SKU: " . $e->getMessage());
-        }
-
-        if (!$published) {
-            $published = false;
+            throw new \Exception("Error generating variant SKU: " . $e->getMessage());
         }
 
         if (empty($sku) || strlen($sku) > 50) {
-            throw new \Exception("Invalid SKU generated.");
-        }
-        if (ProductVariant::where('SKU', $sku)->exists()) {
-            throw new \Exception("SKU already exists.");
+            throw new \Exception("Invalid SKU generated for variant.");
         }
 
-        validator($variantData, [
+        if (ProductVariant::where('sku', $sku)->exists()) {
+            throw new \Exception("SKU already exists for variant: " . $sku);
+        }
+
+        // Validate variant data
+        $validatedData = validator($variantData, [
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'Description' => 'nullable|string',
-            'is_published' => 'boolean',
-            'product_id' => 'required|exists:products,id',
+            'description' => 'nullable|string',
+            'is_published' => 'nullable|boolean',
+            'image' => 'nullable|string|max:255',
         ])->validate();
 
-
-        $product = Product::findOrFail($product_id);
-
+        // Create the variant
         $variant = $product->variants()->create([
-            'name' => $variantData['name'],
-            'price' => $variantData['price'],
-            'SKU' => $sku,
-            'is_published' => $published,
-            'Description' => $variantData['Description'] ?? null,
-            'product_id' => $product_id,
+            'name' => $validatedData['name'],
+            'price' => $validatedData['price'],
+            'sku' => $sku,
+            'is_published' => $validatedData['is_published'] ?? false,
+            'description' => $validatedData['description'] ?? null,
         ]);
+
+        // Store variant image if provided
+        if (isset($validatedData['image']) && !empty($validatedData['image'])) {
+            $this->storeProductImage($variant->id, ProductVariant::class, $validatedData['image']);
+        }
+
+        return $variant;
     }
 }
