@@ -104,9 +104,7 @@
                 </div>
             </aside>
 
-            <!-- Products Grid -->
             <div class="flex-1">
-                <!-- Sort and View Options -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                     <p class="text-sm text-gray-600">
                         Showing <span class="font-medium text-gray-900">{{ $products->count() }}</span> results
@@ -124,12 +122,10 @@
                     </div>
                 </div>
 
-                <!-- Products Grid - 4 columns -->
                 @if($products->count() > 0)
                 <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     @foreach($products as $product)
-                    <a href="/products/{{ $product->slug ?? $product->id }}" class="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        <!-- Product Image -->
+                    <a href="/products/{{$product->id }}" class="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         <div class="relative w-full h-48 overflow-hidden bg-gray-100">
                             @if($product->productImage)
                             <img src="{{ asset('storage/' . ($product->productImage->main_url)) }}" alt="{{ $product->name }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" />
