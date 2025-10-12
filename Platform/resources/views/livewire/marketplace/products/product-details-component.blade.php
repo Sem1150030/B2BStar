@@ -26,7 +26,7 @@
             <div class="flex flex-col">
                 <div class="w-full aspect-square overflow-hidden rounded-xl bg-gray-100 border border-gray-200">
                     @if($product->productImage)
-                    <img src="{{ asset('storage/' . $product->productImage->main_url) }}" alt="{{ $product->name }}" class="size-full object-cover object-center" />
+                        <img src="{{ asset('storage/' . $product->productImage->$selectedImage) }}" alt="{{ $product->name }}" class="size-full object-cover object-center" />
                     @else
                     <div class="size-full flex items-center justify-center bg-gray-200">
                         <svg class="size-32 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,21 +38,21 @@
 
                 @if($product->productImage && ($product->productImage->opt_url || $product->productImage->opt2_url || $product->productImage->opt3_url))
                 <div class="mt-4 grid grid-cols-4 gap-4">
-                    <button class="aspect-square overflow-hidden rounded-lg border-2 border-indigo-600 bg-gray-100">
+                    <button type="button" wire:click="selectImage('main_url')" class="aspect-square overflow-hidden rounded-lg border-2 border-gray-200 @if($selectedImage == 'main_url')border-indigo-600 @else hover:border-gray-300 @endif  bg-gray-100">
                         <img src="{{ asset('storage/' . $product->productImage->main_url) }}" alt="{{ $product->name }}" class="size-full object-cover" />
                     </button>
                     @if($product->productImage->opt_url)
-                    <button class="aspect-square overflow-hidden rounded-lg border-2 border-gray-200 hover:border-gray-300 bg-gray-100">
+                    <button type="button" wire:click="selectImage('opt_url')" class="aspect-square overflow-hidden rounded-lg border-2 border-gray-200 @if($selectedImage == 'opt_url')border-indigo-600 @else hover:border-gray-300 @endif bg-gray-100">
                         <img src="{{ asset('storage/' . $product->productImage->opt_url) }}" alt="{{ $product->name }}" class="size-full object-cover" />
                     </button>
                     @endif
                     @if($product->productImage->opt2_url)
-                    <button class="aspect-square overflow-hidden rounded-lg border-2 border-gray-200 hover:border-gray-300 bg-gray-100">
+                    <button type="button" wire:click="selectImage('opt2_url')" class="aspect-square overflow-hidden rounded-lg border-2 border-gray-200 @if($selectedImage == 'opt2_url')border-indigo-600 @else hover:border-gray-300 @endif bg-gray-100">
                         <img src="{{ asset('storage/' . $product->productImage->opt2_url) }}" alt="{{ $product->name }}" class="size-full object-cover" />
                     </button>
                     @endif
                     @if($product->productImage->opt3_url)
-                    <button class="aspect-square overflow-hidden rounded-lg border-2 border-gray-200 hover:border-gray-300 bg-gray-100">
+                    <button type="button" wire:click="selectImage('opt3_url')" class="aspect-square overflow-hidden rounded-lg border-2 border-gray-200 @if($selectedImage == 'opt3_url')border-indigo-600 @else hover:border-gray-300 @endif bg-gray-100">
                         <img src="{{ asset('storage/' . $product->productImage->opt3_url) }}" alt="{{ $product->name }}" class="size-full object-cover" />
                     </button>
                     @endif

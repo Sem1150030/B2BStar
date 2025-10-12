@@ -9,6 +9,8 @@ class ProductDetailsComponent extends Component
 {
     public Product $product;
 
+    public $selectedImage = 'main_url';
+
     public function mount($product){
         // The product is already loaded with relationships from the controller
         // Just ensure we have all needed relationships loaded
@@ -32,6 +34,10 @@ class ProductDetailsComponent extends Component
                 'productImage'
             ])->findOrFail($product);
         }
+    }
+
+    public function selectImage($imageType){
+        $this->selectedImage = $imageType;
     }
 
     public function render()
