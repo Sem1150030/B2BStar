@@ -57,6 +57,7 @@ class ProductsService
             ]);
         }
         if($imagePath && $existingImage){
+            app(ImageService::class)->deleteImage( $existingImage->main_url);
             $existingImage->main_url = $imagePath;
             $existingImage->save();
             return $existingImage;
@@ -73,7 +74,7 @@ class ProductsService
                 if($i > 3) break;
                 if($imagePath) {
                     $key = $i == 1 ? 'opt_url' : 'opt' . $i . '_url';
-
+                    app(ImageService::class)->deleteImage($productImage->$key);
                     $productImage->$key = $imagePath;
                 }
                 $i++;
@@ -277,11 +278,9 @@ class ProductsService
                     $optionalFiles[] = null;
                 }
             }
-
             $this->storeOptionalImages($product->productImage, $optionalFiles);
         }
 
-        // Handle variants
         if(!empty($data['variants'])){
             foreach ($data['variants'] as $variant) {
                 try {
