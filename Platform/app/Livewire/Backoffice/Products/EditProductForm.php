@@ -12,13 +12,14 @@ use Illuminate\Support\Facades\App;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Nette\Utils\Image;
 
 class EditProductForm extends Component
 {
     use WithFileUploads;
 
     public $product;
-    public $productId;
+public $productId;
     public $categories;
     public $name;
     public $description;
@@ -26,7 +27,7 @@ class EditProductForm extends Component
     public $category;
     public $is_published;
     public $image;
-    public $optionalImages = [null, null, null];
+    public $optional_images = [null, null, null];
     public $existingMainImage;
     public $existingOptionalImages = [];
     public $variants = [];
@@ -49,7 +50,8 @@ class EditProductForm extends Component
                 $product->productImage->opt_url ?? null,
                 $product->productImage->opt2_url ?? null,
                 $product->productImage->opt3_url ?? null,
-            ];}
+            ];
+        }
 
         foreach ($product->variants as $variant) {
             $variantData = [
@@ -58,7 +60,8 @@ class EditProductForm extends Component
                 'price' => $variant->price,
                 'description' => $variant->description,
                 'image' => null,
-                'optionalImages' => [null, null, null],
+                // Do not pre-fill optional_images for each variant
+                'optional_images' => [null, null, null],
                 'existingMainImage' => $variant->productImage ? $variant->productImage->main_url : null,
                 'existingOptionalImages' => $variant->productImage ? [
                     $variant->productImage->opt_url,
@@ -68,19 +71,20 @@ class EditProductForm extends Component
             ];
             $this->existingVariants[] = $variantData;
         }
-        $this->categories = app(CategoriesService::class)->getAllCategories();
+    $this->categories = app(CategoriesService::class)->getAllCategories();
     }
 
     public function update(){
         try {
-            App(BackofficeController::class)->updateProduct([
+
+        App(BackofficeController::class)->updateProduct([
                 'name' => $this->name,
                 'description' => $this->description,
                 'price' => $this->price,
                 'category_id' => $this->category,
                 'is_published' => $this->is_published,
                 'image' => $this->image,
-                'optional_images' => $this->optionalImages,
+                'optional_images' => $this->optional_images,
                 'variants' => $this->variants,
                 'existing_variants' => $this->existingVariants,
             ], $this->productId);
@@ -95,13 +99,13 @@ class EditProductForm extends Component
 
     public function addVariant()
     {
-        $this->variants[] = ['name' => '', 'price' => 0, 'image' => null, 'description' => null, 'optionalImages' => [null, null, null]];
-    }
+        $this->variants[] = ['name' => '', 'price' => 0, 'image' => null, 'description' => null, 'optional_images' => [null, null, null]];
+}
 
     public function removeNewVariant($index)
     {
         unset($this->variants[$index]);
-        $this->variants = array_values($this->variants);
+$this->variants = array_values($this->variants);
     }
 
     public function removeVariant($index)

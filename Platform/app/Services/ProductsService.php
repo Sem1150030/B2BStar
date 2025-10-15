@@ -74,7 +74,9 @@ class ProductsService
                 if($i > 3) break;
                 if($imagePath) {
                     $key = $i == 1 ? 'opt_url' : 'opt' . $i . '_url';
-                    app(ImageService::class)->deleteImage($productImage->$key);
+                    if($productImage->$key) {
+                        app(ImageService::class)->deleteImage($productImage->$key);
+                    }
                     $productImage->$key = $imagePath;
                 }
                 $i++;
@@ -89,7 +91,7 @@ class ProductsService
      */
     public function createProduct(array $data): bool
     {
-        try {
+         try {
             $data['SKU'] = $this->makeSKU($data['name'], $data['category_id'], Auth::user()->role_id);
         } catch (\Exception $e) {
             throw new \Exception("Error generating SKU: " . $e->getMessage());
@@ -100,7 +102,6 @@ class ProductsService
         }
 
         $data['slug'] = \Str::slug($data['name'] . '-' . \Str::random(5));
-
         try {
             validator($data, [
                 'name' => 'required|string|max:255',
@@ -140,8 +141,6 @@ class ProductsService
 
                 }
 
-
-
                 if (!empty($data['variants']) && is_array($data['variants'])) {
                     foreach ($data['variants'] as $variant) {
                         $this->createProductVariant($variant, $product);
@@ -177,7 +176,6 @@ class ProductsService
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'is_published' => 'nullable|boolean',
-            'image' => 'nullable|string|max:255',
         ])->validate();
 
         // Create the variant
@@ -189,9 +187,8 @@ class ProductsService
             'description' => $validatedData['description'] ?? null,
         ]);
 
-        // Store variant image if provided
-        if (isset($validatedData['image']) && !empty($validatedData['image'])) {
-            $productImage = $this->storeProductImage($variant->id, ProductVariant::class, $validatedData['image']);
+        if (isset($variantData['image']) && !empty($variantData['image'])) {
+            $productImage = $this->storeProductImage($variant->id, ProductVariant::class, $variantData['image']);
 
             if ($productImage && isset($variantData['optional_images'])){
                 $this->storeOptionalImages($productImage, $variantData['optional_images']);
@@ -203,13 +200,11 @@ class ProductsService
 
     public function updateProductVariant($variantData, $variantId){
         $variant = ProductVariant::with('productImage', 'product')->find($variantId);
-
         $validatedData = validator($variantData, [
             'name' => 'nullable|string|max:255',
             'price' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
             'is_published' => 'nullable|boolean',
-            'image' => 'nullable|string|max:255',
         ])->validate();
 
         $variant->name = $validatedData['name'] ?? $variant->name;
@@ -217,24 +212,25 @@ class ProductsService
         $variant->description = $validatedData['description'] ?? $variant->description;
         $variant->is_published = $validatedData['is_published'] ?? $variant->is_published;
 
-        if($validatedData['image']){
-            $mainFilePath = App(ImageService::class)->uploadImageProduct($validatedData['image'], $validatedData->productImage);
-            $this->storeProductImage($variantId, 'App\Models\ProductVariant', $mainFilePath);
+        if($variantData['image']){
+            $mainFilePath = App(ImageService::class)->uploadImageProduct($variantData['image']);
+            $this->storeProductImage($variantId, 'App\Models\ProductVariant', $mainFilePath, $variant->productImage);
+        }
 
-            if ($variantData['optional_images']) {
-                $optionalFiles = [];
-                foreach ($variantData['optional_images'] as $image) {
-                    if ($image) {
-                        $optionalFilePath = App(ImageService::class)->uploadImageProduct($image);
-                        $optionalFiles[] = $optionalFilePath;
-                    }
-                    else{
-                        $optionalFiles[] = null;
-                    }
+        if ($variantData['optional_images']) {
+
+            $optionalFiles = [];
+            foreach ($variantData['optional_images'] as $image) {
+                if ($image) {
+                    $optionalFilePath = App(ImageService::class)->uploadImageProduct($image);
+                    $optionalFiles[] = $optionalFilePath;
                 }
-
-                $this->storeOptionalImages($variant->productImage, $optionalFiles);
+                else{
+                    $optionalFiles[] = null;
+                }
             }
+
+            $this->storeOptionalImages($variant->productImage, $optionalFiles);
         }
 
         $variant->save();
@@ -244,7 +240,6 @@ class ProductsService
         $product = Product::with('variants', 'productImage', 'brand')
             ->where('brand_id', Auth::user()->role_id)
             ->find($productId);
-
 
         $validatedData = validator($data, [
             'name' => 'nullable|string|max:255',
@@ -284,6 +279,24 @@ class ProductsService
         if(!empty($data['variants'])){
             foreach ($data['variants'] as $variant) {
                 try {
+                    $variant['image'] = app(ImageService::class)->uploadImageProduct($variant['image']);
+                    if ($variant['optional_images']) {
+                        $optionalFiles = [];
+                        foreach ($variant['optional_images'] as $image) {
+                            if ($image) {
+                                $optionalFilePath = App(ImageService::class)->uploadImageProduct($image);
+                                $optionalFiles[] = $optionalFilePath;
+                            } else {
+                                $optionalFiles[] = null;
+                            }
+                        }
+                        $variant['optional_images'] = $optionalFiles;
+                    } else {
+                        $variant['optional_images'] = [];
+
+                    }
+
+                    $variant['is_published'] = $product->is_published;
                     $this->createProductVariant($variant, $product);
                 }
                 catch (\Exception $e) {

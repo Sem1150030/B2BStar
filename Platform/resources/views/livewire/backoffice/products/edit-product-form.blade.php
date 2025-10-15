@@ -5,6 +5,16 @@
         <p class="mt-2 text-sm text-gray-600">Update your product information, images, and variants</p>
     </div>
 
+    @if($errors)
+        <div>
+            @foreach($errors as $error)
+                <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-sm text-red-700">Error: {{ $error }}</p>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
     <form wire:submit.prevent="update" method="POST" enctype="multipart/form-data" class="space-y-8">
         @csrf
 
@@ -121,9 +131,9 @@
                                     </div>
                                 @endif
 
-                                <input type="file" wire:model="optionalImages.{{ $i }}" id="optionalImage{{ $i }}" accept="image/*"
+                                <input type="file" wire:model="optional_images.{{ $i }}" id="optionalImage{{ $i }}" accept="image/*"
                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
-                                @error('optionalImages.' . $i) <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                @error('optional_images.' . $i) <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span> @enderror
                             </div>
                         @endfor
                     </div>
@@ -213,7 +223,7 @@
                                                 <label for="newVariantOptionalImage{{ $index }}_{{ $i }}" class="block text-xs font-medium text-gray-700 mb-2">
                                                     Additional {{ $i + 1 }}
                                                 </label>
-                                                <input type="file" wire:model="variants.{{ $index }}.optionalImages.{{ $i }}"
+                                                <input type="file" wire:model="variants.{{ $index }}.optional_images.{{ $i }}"
                                                        id="newVariantOptionalImage{{ $index }}_{{ $i }}" accept="image/*"
                                                        class="block w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                                             </div>
@@ -302,12 +312,10 @@
                                                     </div>
                                                 @endif
 
-                                                <input type="file" wire:model="existingVariants.{{ $index }}.optionalImages.{{ $i }}"
+                                                <input type="file" wire:model="existingVariants.{{ $index }}.optional_images.{{ $i }}"
                                                        id="variantOptionalImage{{ $index }}_{{ $i }}" accept="image/*"
                                                        class="block w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                                                @error('existingVariants.' . $index . '.optionalImages.' . $i)
-                                                    <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span>
-                                                @enderror
+                                                @error('existingVariants.' . $index . '.optional_images.' . $i) <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span> @enderror
                                             </div>
                                         @endfor
                                     @endif
