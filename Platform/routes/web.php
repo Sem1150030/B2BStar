@@ -34,6 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/backoffice/products/create', [BackofficeController::class, 'createProduct'])->name('backoffice.products.create');
     Route::post('/backoffice/products/create', [BackofficeController::class, 'storeProduct'])->name('backoffice.products.store');
     Route::get('/backoffice/products/edit/{id}', [BackofficeController::class, 'editProduct'])->name('backoffice.products.edit');
+    Route::delete('/backoffice/products_variant/delete/{id}', [BackofficeController::class, 'deleteProductVariant'])->name('backoffice.products_variant.delete');
 });
 
 Route::get('/lang/{locale}',[LanguageController::class, 'switch'])->name('lang.switch');

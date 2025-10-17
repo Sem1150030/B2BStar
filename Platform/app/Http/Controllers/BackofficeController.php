@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Services\ProductsService;
 use Gate;
 use Illuminate\Http\Request;
@@ -61,6 +62,25 @@ class BackofficeController extends Controller
         }
         $product = Product::with('productImage', 'category', 'brand', 'variants')->where('brand_id', Auth::user()->role_id)->find($id);
         return view('backoffice.products.edit_product', ['product' => $product]);
+    }
+
+    public function deleteProductVariant($id){
+        if (!Gate::allows('access-backoffice')) {
+            return redirect()->route('storefront')->with('error', 'You do not have access to the backoffice.');
+        }
+        try {
+            $variant = ProductVariant::with('productImage', 'product')->where('brand_id')->firstOrFail($id);
+            if($variant->product->brand_id !== Auth::user()->role_id){
+                return redirect()->route('storefront')->with('error', 'You do not have access to delete this variant.');
+            }
+
+            app(ProductsService::class)->deleteProductVariant($variant);
+            return redirect()->back()->with('success', 'Product variant deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error deleting product variant: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Unexpected error: ' . $e->getMessage());
+        }
     }
 
     public function updateProduct($request, $id){

@@ -5,6 +5,7 @@ namespace App\Livewire\Backoffice\Products;
 use App\Http\Controllers\BackofficeController;
 use App\Http\Controllers\ProductsController;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Services\ImageService;
 use App\Services\CategoriesService;
 use App\Services\ProductsService;
@@ -72,6 +73,17 @@ public $productId;
             $this->existingVariants[] = $variantData;
         }
     $this->categories = app(CategoriesService::class)->getAllCategories();
+    }
+
+    public function deleteVariant(ProductVariant $variant){
+        try {
+            route('backoffice.products_variant.delete', ['id', $variant->id]);
+            session()->flash('success', 'Variant deleted successfully.');
+        }catch (
+            \Exception $e
+        ){
+            session()->flash('error', 'Error deleting variant: ' . $e->getMessage());
+        }
     }
 
     public function update(){

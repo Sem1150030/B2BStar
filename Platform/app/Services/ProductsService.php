@@ -27,6 +27,24 @@ class ProductsService
         return Product::find($id);
     }
 
+    public function deleteProductVariant($variantId){
+        $variant = ProductVariant::with('productImage')->find($variantId);
+        if($variant->productImage){
+            app(ImageService::class)->deleteImage($variant->productImage->main_url);
+            if($variant->productImage->opt_url){
+                app(ImageService::class)->deleteImage($variant->productImage->opt_url);
+            }
+            if($variant->productImage->opt2_url){
+                app(ImageService::class)->deleteImage($variant->productImage->opt2_url);
+            }
+            if($variant->productImage->opt3_url){
+                app(ImageService::class)->deleteImage($variant->productImage->opt3_url);
+            }
+            $variant->productImage()->delete();
+        }
+        return $variant->delete();
+    }
+
 
     public function getProductsByBrand($brand_id, ?int $limit = null)
     {
