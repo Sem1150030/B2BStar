@@ -22,6 +22,7 @@ Route::get('/auth/register', [AuthController::class, 'register'])->name('registe
 Route::get('/auth/register/brand', [AuthController::class, 'registerBrand'])->name('register.brand');
 Route::post('/auth/register/brand', [AuthController::class, 'registerBrandAction'])->name('register.brand.action');
 Route::get('/auth/register/retailer', [AuthController::class, 'registerRetailer'])->name('register.retailer');
+Route::post('/auth/register/retailer', [AuthController::class, 'registerRetailerAction'])->name('register.retailer.action');
 
 Route::get('/products/{id}', [ProductsController::class, 'index'])->name('products.details');
 

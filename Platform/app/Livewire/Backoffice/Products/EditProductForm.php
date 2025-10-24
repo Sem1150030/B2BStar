@@ -75,15 +75,15 @@ public $productId;
     $this->categories = app(CategoriesService::class)->getAllCategories();
     }
 
-    public function deleteVariant(ProductVariant $variant){
+    public function deleteVariant($variantId){
         try {
-            route('backoffice.products_variant.delete', ['id', $variant->id]);
+            $variant = ProductVariant::findOrFail($variantId);
+            $variant->delete();
             session()->flash('success', 'Variant deleted successfully.');
-        }catch (
-            \Exception $e
-        ){
+        } catch (\Exception $e) {
             session()->flash('error', 'Error deleting variant: ' . $e->getMessage());
         }
+        return redirect()->route('backoffice.products.edit', ['id' => $this->productId]);
     }
 
     public function update(){

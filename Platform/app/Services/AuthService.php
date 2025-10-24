@@ -1,10 +1,12 @@
 <?php
 namespace App\Services;
 
+use App\Models\Retailer;
 use App\Models\User;
 use App\RoleTypes;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AuthService
 {
@@ -32,6 +34,38 @@ class AuthService
         }
 
         return [false, 'Invalid email or password.'];
+    }
+
+    public function registerRetailer(array $data)
+    {
+        try {
+            DB::transaction(function () use ($data) {
+                $brand = Retailer::create([
+                    'business_name' => $data['name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'finance_email' => $data['finance_email'],
+                    'description' => $data['description'] ?? null,
+                    'country' => $data['country'] ?? null,
+                ]);
+
+                User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => bcrypt($data['password']),
+                    'role_type' => RoleTypes::BRAND->value,
+                    'role_id' => $brand->id,
+                ]);
+            });
+
+            return [true, 'Registration successful!'];
+
+
+        } catch (\Exception $e) {
+            return [false, 'Failed to create brand: ' . $e->getMessage()];
+        }
+
+
     }
 
     public function registerBrand(array $data)

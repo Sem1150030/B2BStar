@@ -239,7 +239,7 @@
                         <div class="border-2 border-gray-200 rounded-xl p-6 bg-gray-50 hover:border-indigo-300 transition">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-lg font-semibold text-gray-900">Variant {{ $index + 1 }}</h3>
-                                <button type="button" wire:click="deleteVariant($variant)"
+                                <button type="button" wire:click="deleteVariant({{ $variant['id'] }})"
                                         class="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition font-medium text-sm">
                                     Remove
                                 </button>

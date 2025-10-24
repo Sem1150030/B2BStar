@@ -81,4 +81,25 @@ class AuthController extends Controller
 
     }
 
+    public function registerRetailerAction(Request $request, AuthService $authService)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|max:30',
+            'finance_email' => 'required|email',
+            'country' => 'required|string|max:3',
+            'description' => 'nullable|string|max:1000',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        [$success, $message] = $authService->registerRetailer($data);
+
+        if ($success) {
+            return redirect()->route('login')->with('success', $message);
+        }
+        return back()->withErrors(['register' => $message])->withInput();
+
+    }
+
 }
